@@ -48,19 +48,22 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsDiv.style.display = 'block';
 
         let html = `
-            <div style="background: #ff3366; color: #fff; padding: 10px; border-radius: 6px; margin-bottom: 15px; text-align: center;">
-                <h4 style="margin: 0; font-size: 14px;">${coupons.length} Deals found for ${domain}</h4>
+            <div style="background: var(--primary-gradient); color: #fff; padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center; box-shadow: var(--shadow-sm);">
+                <h4 style="margin: 0; font-size: 14px; color: white; letter-spacing: 0;">🎉 ${coupons.length} Deals found for ${domain}</h4>
             </div>
-            <div style="max-height: 250px; overflow-y: auto;">
+            <div style="max-height: 280px; overflow-y: auto; padding-right: 4px; padding-bottom: 10px;">
         `;
 
         coupons.forEach(coupon => {
             html += `
-                <div style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); background: #fff;">
-                    <div style="font-size: 13px; margin-bottom: 5px; color: #555; text-align: left;">${coupon.title}</div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong style="color: #ff3366; font-size: 15px; border: 1px dashed #ff3366; padding: 4px 8px; background: #fff1f4; border-radius: 4px;">${coupon.code}</strong>
-                        <button class="popup-btn-copy" data-code="${coupon.code}" style="font-size: 12px; padding: 6px 12px; cursor: pointer; background: #007bff; color: #fff; border: none; border-radius: 4px; font-weight: bold;">Copy</button>
+                <div class="coupon-card">
+                    <div class="coupon-title">${coupon.title}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                        <strong>${coupon.code}</strong>
+                        <button class="copy-btn popup-btn-copy" data-code="${coupon.code}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Copy
+                        </button>
                     </div>
                 </div>
             `;
@@ -72,14 +75,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add copy logic
         resultsDiv.querySelectorAll('.popup-btn-copy').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const code = e.target.getAttribute('data-code');
+                const targetBtn = e.currentTarget;
+                const code = targetBtn.getAttribute('data-code');
                 navigator.clipboard.writeText(code).then(() => {
-                    const originalText = e.target.innerText;
-                    e.target.innerText = "Copied!";
-                    e.target.style.background = "#28a745";
+                    const originalHTML = targetBtn.innerHTML;
+                    targetBtn.innerHTML = `
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      Copied!
+                    `;
+                    targetBtn.style.background = "var(--accent-success)";
+                    targetBtn.style.color = "#fff";
+                    targetBtn.style.borderColor = "var(--accent-success)";
+                    
                     setTimeout(() => {
-                        e.target.innerText = originalText;
-                        e.target.style.background = "#007bff";
+                        targetBtn.innerHTML = originalHTML;
+                        targetBtn.style.background = "";
+                        targetBtn.style.color = "";
+                        targetBtn.style.borderColor = "";
                     }, 2000);
                 });
             });
@@ -93,7 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
         { store: "flipkart.com", text: "BBD Pre-deals" }
     ];
 
-    trendingList.innerHTML = trendingDeals.map(d => `<a href="https://${d.store}" target="_blank" style="display: block; text-decoration: none; color: inherit; padding: 5px; border-bottom: 1px solid #eee; font-size: 13px; cursor: pointer; text-align: left;"><strong>${d.store}</strong> • ${d.text} <span style="float:right; color:#007bff;">&rarr;</span></a>`).join('');
+    trendingList.innerHTML = trendingDeals.map(d => `
+        <a href="https://${d.store}" target="_blank" style="display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 13px; cursor: pointer; transition: color 0.2s;">
+            <span><strong style="color: var(--text-main); font-weight: 600;">${d.store}</strong> • <span style="color: var(--text-muted);">${d.text}</span></span>
+            <span style="color: #FF416C; font-weight: 600;">&rarr;</span>
+        </a>
+    `).join('');
 
     // Navigation Logic
     btnShowSubmit.addEventListener('click', () => {
@@ -128,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Reset form
             btnSubmitCoupon.disabled = false;
-            btnSubmitCoupon.textContent = "Submit for Review";
+            btnSubmitCoupon.innerHTML = "Submit for Review";
             document.getElementById('sub-store').value = '';
             document.getElementById('sub-code').value = '';
             document.getElementById('sub-title').value = '';
@@ -150,9 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const matched = typeof SUPPORTED_STORES !== 'undefined' ? SUPPORTED_STORES.filter(store => store.includes(query)) : [];
         
         if (matched.length > 0) {
-            resultsDiv.innerHTML = '<ul class="search-list" style="padding: 0; list-style: none; margin: 0; text-align: left;">' + matched.map(s => `<li><a href="https://${s}" target="_blank" style="display: block; padding: 8px 0; border-bottom: 1px solid #eee; text-decoration: none; color: #007bff; font-weight: 500;">Open ${s} &rarr;</a></li>`).join('') + '</ul>';
+            resultsDiv.innerHTML = '<ul style="padding: 0; list-style: none; margin: 0;">' + 
+                matched.map(s => `<li><a href="https://${s}" target="_blank" style="display: flex; justify-content: space-between; padding: 12px 10px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: var(--text-main); font-weight: 500; background: var(--bg-secondary); transition: all 0.2s;">Open ${s} <span style="color: #FF416C;">&rarr;</span></a></li>`).join('') 
+                + '</ul>';
         } else {
-            resultsDiv.innerHTML = '<div class="empty-state"><p>No stores found.</p><button id="suggest-btn">Suggest this store?</button></div>';
+            resultsDiv.innerHTML = '<div class="empty-state"><p>No stores found matching "'+query+'"</p><button id="suggest-btn" style="background:#FF416C; color:white; border:none;">Suggest this store?</button></div>';
             const suggestBtn = document.getElementById('suggest-btn');
             if (suggestBtn) suggestBtn.addEventListener('click', () => {
                 alert('Thanks for suggesting ' + query + '!');

@@ -117,47 +117,56 @@
     }
 
     function renderWidget(domain, coupons) {
-        // Advanced DOM rendering with copy & voting UI
+        // Advanced DOM rendering with modern, premium styling
         const widget = document.createElement('div');
         widget.id = 'india-coupon-widget';
         widget.className = 'ic-widget-anim';
         widget.style.cssText = `
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 280px;
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            bottom: 24px;
+            right: 24px;
+            width: 320px;
+            background: #ffffff;
+            border: 1px solid rgba(229, 231, 235, 1);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             z-index: 999999;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #333;
-            transition: all 0.3s ease;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            color: #111827;
+            overflow: hidden;
         `;
         
+        // Import Inter Font if not present
+        if (!document.getElementById('ic-modern-font')) {
+            const fontLink = document.createElement('link');
+            fontLink.id = 'ic-modern-font';
+            fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+            fontLink.rel = 'stylesheet';
+            document.head.appendChild(fontLink);
+        }
+
         let html = `
-            <div style="background: #ff3366; color: #fff; padding: 10px; border-radius: 8px 8px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="margin: 0; font-size: 14px;">Deals for ${domain}</h4>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <button id="ic-btn-track" style="background: #fff; color: #ff3366; border: none; font-size: 10px; font-weight: bold; border-radius: 4px; padding: 2px 6px; cursor: pointer;">Track Price</button>
-                    <button id="india-coupon-close" style="background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; margin-left: 2px;">&times;</button>
+            <div style="background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%); color: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.3px;">🎁 Deals for ${domain}</h4>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button id="ic-btn-track" style="background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.4); font-size: 11px; font-weight: 600; border-radius: 6px; padding: 4px 8px; cursor: pointer; transition: all 0.2s;">Track Price</button>
+                    <button id="india-coupon-close" style="background: none; border: none; color: #fff; cursor: pointer; font-size: 18px; margin-left: 2px; opacity: 0.8; transition: opacity 0.2s;">&times;</button>
                 </div>
             </div>
-            <div style="padding: 10px; max-height: 300px; overflow-y: auto;">
+            <div style="padding: 16px 16px 4px; max-height: 350px; overflow-y: auto; background-color: #f4f5f7;">
         `;
         
         coupons.forEach(coupon => {
             html += \`
-                <div class="ic-coupon-card" data-code="\${coupon.code}" data-id="\${coupon.id || coupon.code}" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                    <div style="font-size: 13px; margin-bottom: 5px; color: #555;">\${coupon.title}</div>
-                    <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 8px;">
-                        <strong style="color: #ff3366; font-size: 15px; border: 1px dashed #ff3366; padding: 2px 6px; background: #fff1f4; border-radius: 4px;">\${coupon.code}</strong>
-                        <button class="ic-btn-copy" style="font-size: 11px; padding: 4px 8px; cursor: pointer; background: #007bff; color: #fff; border: none; border-radius: 4px;">Copy</button>
+                <div class="ic-coupon-card" data-code="\${coupon.code}" data-id="\${coupon.id || coupon.code}" style="background: #ffffff; border: 1px solid #e5e7eb; padding: 16px; margin-bottom: 12px; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: transform 0.2s;">
+                    <div style="font-size: 14px; font-weight: 500; margin-bottom: 8px; color: #111827; line-height: 1.4;">\${coupon.title}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong style="color: #FF416C; font-size: 15px; font-weight: 700; background: rgba(255, 65, 108, 0.1); padding: 4px 8px; border-radius: 6px;">\${coupon.code}</strong>
+                        <button class="ic-btn-copy" style="font-size: 12px; font-weight: 600; padding: 6px 12px; cursor: pointer; background: #e5e7eb; color: #111827; border: none; border-radius: 6px; transition: background 0.2s;">Copy</button>
                     </div>
-                    <div style="display: flex; gap: 5px; font-size: 11px;">
-                        <button class="ic-btn-vote-up" style="flex: 1; padding: 4px; cursor: pointer; background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; border-radius: 4px;">Worked</button>
-                        <button class="ic-btn-vote-down" style="flex: 1; padding: 4px; cursor: pointer; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; border-radius: 4px;">Failed</button>
+                    <div style="display: flex; gap: 8px; font-size: 11px; font-weight: 600;">
+                        <button class="ic-btn-vote-up" style="flex: 1; padding: 6px; cursor: pointer; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; border-radius: 6px; transition: all 0.2s;">👍 Worked</button>
+                        <button class="ic-btn-vote-down" style="flex: 1; padding: 6px; cursor: pointer; background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; border-radius: 6px; transition: all 0.2s;">👎 Failed</button>
                     </div>
                 </div>
             \`;
