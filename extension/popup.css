@@ -1,0 +1,103 @@
+body {
+    width: 300px;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+.header {
+    background-color: #ff3366;
+    color: white;
+    padding: 10px 15px;
+}
+.header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+.content {
+    padding: 15px;
+    min-height: 150px;
+}
+#search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+#results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#results li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+.footer {
+    border-top: 1px solid #ccc;
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    text-align: right;
+    transition: background-color 0.3s;
+}
+button {
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+button:hover {
+    background: #eee;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 15px 0;
+    color: #666;
+}
+.empty-state p { margin: 0 0 10px 0; font-size: 14px; }
+.empty-state button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+.empty-state button:hover {
+    background-color: #0056b3;
+}
+
+/* Dark Mode */
+body.theme-dark {
+    background-color: #1a1a1a;
+    color: #ddd;
+}
+body.theme-dark .header {
+    background-color: #d81b60;
+}
+body.theme-dark .content {
+    background-color: #1a1a1a;
+}
+body.theme-dark .footer {
+    background-color: #222;
+    border-top: 1px solid #444;
+}
+body.theme-dark #search-input {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
+}
+body.theme-dark button {
+    background-color: #333;
+    color: #eee;
+    border-color: #555;
+}
+body.theme-dark button:hover {
+    background-color: #444;
+}
+body.theme-dark #results li {
+    border-bottom: 1px solid #333;
+}

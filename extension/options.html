@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Extension Settings</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Settings</h2>
+        
+        <div class="setting-item">
+            <label>
+                <input type="checkbox" id="enable-extension"> Enable Extension
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <label>
+                <input type="checkbox" id="dark-mode"> Enable Dark Mode
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <label>
+                <input type="checkbox" id="enable-notifications"> Enable Price Drop Notifications
+            </label>
+            <p style="font-size: 11px; color:#888; margin-top:2px;">Allows us to notify you when tracked prices drop.</p>
+        </div>
+
+        <div class="setting-item">
+            <button id="clear-cache">Clear Coupon Cache</button>
+        </div>
+        
+        <div id="status" class="status-msg"></div>
+
+        <div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid #eee; font-size: 11px; color: #888; text-align: center;">
+            <p><strong>Affiliate Disclosure:</strong> To help keep this extension free, we use affiliate links. If you make a purchase through our links, we may earn a small commission at no extra cost to you.</p>
+        </div>
+    </div>
+    <script src="options.js"></script>
+</body>
+</html>

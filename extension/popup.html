@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Coupons</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="header">
+        <h3>India Coupons</h3>
+    </div>
+    <div class="content">
+        <input type="text" id="search-input" placeholder="Search stores (e.g. ajio)...">
+        
+        <div id="default-view">
+            <h4 style="margin: 10px 0 5px; font-size: 13px; color: #666;">Trending Deals</h4>
+            <div id="trending-list" style="margin-bottom: 10px;">
+                <!-- Filled via JS -->
+            </div>
+            <button id="btn-show-submit" style="width: 100%; border: 1px dashed #ccc; background: none; color: #555;">+ Submit a Coupon</button>
+        </div>
+
+        <div id="submit-view" style="display: none; text-align: left;">
+            <h4 style="margin: 0 0 10px; font-size: 13px;">Submit Coupon</h4>
+            <input type="text" id="sub-store" placeholder="Store Domain (e.g. ajio.com)" style="width:100%; margin-bottom: 5px; padding: 5px; box-sizing: border-box;">
+            <input type="text" id="sub-code" placeholder="Coupon Code" style="width:100%; margin-bottom: 5px; padding: 5px; box-sizing: border-box;">
+            <input type="text" id="sub-title" placeholder="Description/Offer" style="width:100%; margin-bottom: 5px; padding: 5px; box-sizing: border-box;">
+            <button id="btn-submit-coupon" style="width:100%; background: #28a745; color: #fff;">Submit for Review</button>
+            <button id="btn-cancel-submit" style="width:100%; background: #ccc; margin-top: 5px;">Cancel</button>
+        </div>
+
+        <div id="results" style="display: none;"></div>
+    </div>
+    <div class="footer">
+        <button id="btn-options">Settings</button>
+    </div>
+    <script src="utils.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
