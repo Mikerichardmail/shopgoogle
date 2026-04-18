@@ -154,9 +154,14 @@ async function runPipeline() {
     console.log("🚀 Starting Daily Coupon Scraping Pipeline...");
     
     const stores = await fetchStoreDomains();
-    console.log(`Loaded ${stores.length} stores. Analyzing all stores for full production run...`);
     
-    for (const store of stores) {
+    // SAFETY LIMIT: Cap to 350 stores so it never runs more than ~45 mins, 
+    // keeping it strictly under Github's 2000 free monthly minutes.
+    const targetStores = stores.slice(0, 350);
+    
+    console.log(`Loaded ${stores.length} total stores. Analyzing ${targetStores.length} stores to respect free-tier time limits...`);
+    
+    for (const store of targetStores) {
         if (!store.name) continue;
         
         const rawHtmlText = await scrapeCouponPage(store);
