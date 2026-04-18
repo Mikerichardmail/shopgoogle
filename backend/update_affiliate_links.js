@@ -25,7 +25,7 @@ async function run() {
             let match = line.match(/(.*?)(?:→|-|–|—)\s*(https?:\/\/[^\s]+)/);
             if (match) {
                 let name = match[1].trim();
-                let link = match[2].trim();
+                let link = match[2].replace(/[^\x20-\x7E]/g, '').trim();
                 if (name) affiliateMap[name.toLowerCase()] = link;
             } else if (i > 0) {
                 // Check format: Line 1: Store, Line 2: Link
@@ -33,7 +33,8 @@ async function run() {
                 if (!prevLine.includes('http')) {
                     // Clean previous line to be just letters/numbers
                     let name = prevLine.replace(/[^a-zA-Z0-9\s]/g, '').trim().toLowerCase();
-                    if (name) affiliateMap[name] = line;
+                    let link = line.replace(/[^\x20-\x7E]/g, '').trim();
+                    if (name) affiliateMap[name] = link;
                 }
             }
         }
@@ -56,6 +57,8 @@ async function run() {
 
     let stores = await res.json();
     let updatedCount = 0;
+    let insertedCount = 0;
+    let matchedKeys = new Set();
     
     for (const store of stores) {
         let targetLink = null;
@@ -63,11 +66,13 @@ async function run() {
         
         if (affiliateMap[sName]) {
             targetLink = affiliateMap[sName];
+            matchedKeys.add(sName);
         } else {
              // Fallback partial match
             for (let [key, val] of Object.entries(affiliateMap)) {
                 if (sName.includes(key) || key.includes(sName)) {
                     targetLink = val;
+                    matchedKeys.add(key);
                     break;
                 }
             }
@@ -91,7 +96,43 @@ async function run() {
         }
     }
     
-    console.log(`\n✅ Safe update complete. Total stores updated securely with affiliate links: ${updatedCount}`);
+    // Insert new stores not found in DB
+    for (let [key, targetLink] of Object.entries(affiliateMap)) {
+        if (!matchedKeys.has(key)) {
+            // Generate a domain name format if not known
+            let domain = key.replace(/[^a-z0-9]/g, '') + '.com';
+            // Specific overrides
+            if (key === 'amazon') domain = 'amazon.in';
+            if (key === 'myntra') domain = 'myntra.com';
+            if (key === 'purplle') domain = 'purplle.com';
+            
+            console.log(`Inserting new store: ${key} (${domain}) => ${targetLink}`);
+            let createRes = await fetch(`${SUPABASE_URL}/rest/v1/stores`, {
+                method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify({
+                    name: key.charAt(0).toUpperCase() + key.slice(1),
+                    domain: domain,
+                    affiliate_url: targetLink,
+                    active: true
+                })
+            });
+            if (createRes.ok) {
+                insertedCount++;
+            } else {
+                console.error(`Failed to insert ${key}`);
+            }
+        }
+    }
+    
+    console.log(`\n✅ Database update complete!`);
+    console.log(`Updated existing stores: ${updatedCount}`);
+    console.log(`Inserted new stores: ${insertedCount}`);
 }
 
 run().catch(console.error);

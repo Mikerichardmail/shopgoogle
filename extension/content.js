@@ -7,13 +7,20 @@
 
         console.log("India Coupon Ext: Checking domain - ", domain);
 
-        chrome.storage.local.get(['enabled', 'disabledSites'], (result) => {
+        chrome.storage.local.get(['enabled', 'disabledSites', 'storeCache'], (result) => {
             if (!result.enabled || (result.disabledSites && result.disabledSites.includes(domain))) {
                 console.log("India Coupon Ext: Disabled globally or for this site.");
                 return;
             }
-
+            
+            let isSupported = false;
             if (typeof isSupportedStore === 'function' && isSupportedStore(domain)) {
+                isSupported = true;
+            } else if (result.storeCache && result.storeCache.data) {
+                isSupported = result.storeCache.data.some(store => domain === store.domain || domain.endsWith('.' + store.domain));
+            }
+
+            if (isSupported) {
                 console.log("India Coupon Ext: Supported store detected!", domain);
                 initCouponWidget(domain);
             } else {
@@ -157,11 +164,11 @@
         `;
         
         coupons.forEach(coupon => {
-            html += \`
-                <div class="ic-coupon-card" data-code="\${coupon.code}" data-id="\${coupon.id || coupon.code}" style="background: #ffffff; border: 1px solid #e5e7eb; padding: 16px; margin-bottom: 12px; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: transform 0.2s;">
-                    <div style="font-size: 14px; font-weight: 500; margin-bottom: 8px; color: #111827; line-height: 1.4;">\${coupon.title}</div>
+            html += `
+                <div class="ic-coupon-card" data-code="${coupon.code}" data-id="${coupon.id || coupon.code}" style="background: #ffffff; border: 1px solid #e5e7eb; padding: 16px; margin-bottom: 12px; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: transform 0.2s;">
+                    <div style="font-size: 14px; font-weight: 500; margin-bottom: 8px; color: #111827; line-height: 1.4;">${coupon.title}</div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <strong style="color: #FF416C; font-size: 15px; font-weight: 700; background: rgba(255, 65, 108, 0.1); padding: 4px 8px; border-radius: 6px;">\${coupon.code}</strong>
+                        <strong style="color: #FF416C; font-size: 15px; font-weight: 700; background: rgba(255, 65, 108, 0.1); padding: 4px 8px; border-radius: 6px;">${coupon.code}</strong>
                         <button class="ic-btn-copy" style="font-size: 12px; font-weight: 600; padding: 6px 12px; cursor: pointer; background: #e5e7eb; color: #111827; border: none; border-radius: 6px; transition: background 0.2s;">Copy</button>
                     </div>
                     <div style="display: flex; gap: 8px; font-size: 11px; font-weight: 600;">
@@ -169,10 +176,10 @@
                         <button class="ic-btn-vote-down" style="flex: 1; padding: 6px; cursor: pointer; background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; border-radius: 6px; transition: all 0.2s;">👎 Failed</button>
                     </div>
                 </div>
-            \`;
+            `;
         });
         
-        html += \`</div>\`;
+        html += `</div>`;
         widget.innerHTML = html;
         document.body.appendChild(widget);
 

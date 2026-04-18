@@ -25,6 +25,14 @@ jobs:
         working-directory: ./backend/scraper
         run: npm install
         
+      - name: Auto-Discover New Websites
+        working-directory: ./backend/scraper
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node discover_stores.js
+        
       - name: Run Scraper AI Script
         working-directory: ./backend/scraper
         env:

@@ -2,18 +2,35 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Coupons</title>
+    <title>Best Coupons India</title>
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <div class="header">
-        <h3>India Coupons</h3>
+    <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+        <img src="assets/icon48.png" alt="Best Coupons India" style="height: 28px; width: 28px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <select id="language-select" style="padding: 4px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 13px; font-weight: 500; background: var(--bg-secondary); color: var(--text-main); cursor: pointer; outline: none;">
+                <option value="en">EN</option>
+                <option value="hi">HI</option>
+                <option value="mr">MR</option>
+                <option value="bn">BN</option>
+                <option value="gu">GU</option>
+                <option value="pa">PA</option>
+                <option value="te">TE</option>
+                <option value="ta">TA</option>
+                <option value="kn">KN</option>
+                <option value="ml">ML</option>
+            </select>
+            <button id="btn-options" style="background: transparent; border: none; padding: 4px; color: var(--text-muted); cursor: pointer; display: flex;" title="Settings">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+        </div>
     </div>
     <div class="content">
         <input type="text" id="search-input" placeholder="Search stores (e.g. ajio)...">
         
         <div id="default-view">
-            <h4 style="margin: 10px 0 5px; font-size: 13px; color: #666;">Trending Deals</h4>
+            <h4 style="margin: 10px 0 5px; font-size: 13px; color: #666;" data-i18n="trendingDeals">Trending Deals</h4>
             <div id="trending-list" style="margin-bottom: 10px;">
                 <!-- Filled via JS -->
             </div>
@@ -21,7 +38,7 @@
         </div>
 
         <div id="submit-view" style="display: none; text-align: left;">
-            <h4 style="margin: 0 0 10px; font-size: 13px;">Submit Coupon</h4>
+            <h4 style="margin: 0 0 10px; font-size: 13px;" data-i18n="titleSubmit">Submit Coupon</h4>
             <input type="text" id="sub-store" placeholder="Store Domain (e.g. ajio.com)" style="width:100%; margin-bottom: 5px; padding: 5px; box-sizing: border-box;">
             <input type="text" id="sub-code" placeholder="Coupon Code" style="width:100%; margin-bottom: 5px; padding: 5px; box-sizing: border-box;">
             <input type="text" id="sub-title" placeholder="Description/Offer" style="width:100%; margin-bottom: 5px; padding: 5px; box-sizing: border-box;">
@@ -31,10 +48,9 @@
 
         <div id="results" style="display: none;"></div>
     </div>
-    <div class="footer">
-        <button id="btn-options">Settings</button>
-    </div>
+
     <script src="utils.js"></script>
+    <script src="i18n.js"></script>
     <script src="popup.js"></script>
 </body>
 </html>

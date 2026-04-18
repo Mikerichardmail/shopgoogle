@@ -23,6 +23,43 @@ chrome.runtime.onInstalled.addListener(() => {
 // Function to check and update cache
 const CACHE_DURATION_MS = 6 * 60 * 60 * 1000; // 6 hours
 
+async function fetchAllStores() {
+    return new Promise((resolve) => {
+        chrome.storage.local.get(['storeCache'], (result) => {
+            const cache = result.storeCache || {};
+            const now = Date.now();
+            
+            // Return cached if valid (24 hours)
+            if (cache.timestamp && (now - cache.timestamp < 24 * 60 * 60 * 1000) && cache.data && cache.data.length > 0) {
+                return resolve(cache.data);
+            }
+            
+            if (USE_REAL_BACKEND && SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL") {
+                fetch(`${SUPABASE_URL}/rest/v1/stores?select=domain,affiliate_url&active=eq.true`, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const storesList = data.map(d => ({ domain: d.domain, affiliate_url: d.affiliate_url }));
+                    chrome.storage.local.set({ storeCache: { timestamp: now, data: storesList } }, () => resolve(storesList));
+                })
+                .catch(err => {
+                    console.error("Supabase Error fetching stores:", err);
+                    resolve(cache.data || []); 
+                });
+                return;
+            }
+
+            const mockDomains = ["amazon.in", "flipkart.com", "ajio.com", "myntra.com", "nykaa.com", "tatacliq.com"];
+            const storesList = mockDomains.map(d => ({ domain: d, affiliate_url: `https://${d}` }));
+            chrome.storage.local.set({ storeCache: { timestamp: now, data: storesList } }, () => resolve(storesList));
+        });
+    });
+}
+
 async function getCouponsForDomain(domain) {
     return new Promise((resolve) => {
         chrome.storage.local.get(['couponCache'], (result) => {
@@ -110,9 +147,24 @@ async function getCouponsForDomain(domain) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log("Received message:", message);
     
+    if (message.action === 'fetchAllStores') {
+        fetchAllStores().then(stores => {
+            sendResponse({ success: true, stores });
+        });
+        return true;
+    }
+
     if (message.action === 'fetchCoupons') {
         const domain = message.domain;
         getCouponsForDomain(domain).then(coupons => {
+            if (sender && sender.tab && sender.tab.id) {
+                if (coupons && coupons.length > 0) {
+                    chrome.action.setBadgeText({ text: coupons.length.toString(), tabId: sender.tab.id });
+                    chrome.action.setBadgeBackgroundColor({ color: '#FF416C', tabId: sender.tab.id });
+                } else {
+                    chrome.action.setBadgeText({ text: '', tabId: sender.tab.id });
+                }
+            }
             sendResponse({ success: true, coupons });
         });
         

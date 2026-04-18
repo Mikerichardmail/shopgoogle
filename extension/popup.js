@@ -10,9 +10,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSubmitCoupon = document.getElementById('btn-submit-coupon');
     const btnCancelSubmit = document.getElementById('btn-cancel-submit');
 
-    // Apply dark mode if setting enabled
-    chrome.storage.local.get(['theme'], (result) => {
+    // Securely handle external link clicks (CSP compliant)
+    document.addEventListener('click', (e) => {
+        let link = e.target.closest('a.store-link');
+        if (link) {
+            e.preventDefault();
+            chrome.tabs.create({ url: link.href });
+        }
+    });
+
+    // Apply dark mode and language settings
+    chrome.storage.local.get(['theme', 'appLang'], (result) => {
         if (result.theme === 'dark') document.body.classList.add('theme-dark');
+        
+        const activeLang = result.appLang || "en";
+        const langSelect = document.getElementById('language-select');
+        if (langSelect) {
+            langSelect.value = activeLang;
+            langSelect.addEventListener('change', (e) => {
+                const selectedLang = e.target.value;
+                chrome.storage.local.set({ appLang: selectedLang }, () => {
+                    if (typeof applyLanguage === 'function') applyLanguage(selectedLang);
+                });
+            });
+        }
+        if (typeof applyLanguage === 'function') {
+            applyLanguage(activeLang);
+        }
+    });
+
+    let allAvailableStores = typeof SUPPORTED_STORES !== 'undefined' ? SUPPORTED_STORES.map(s => ({domain: s, affiliate_url: `https://${s}`})) : [];
+    
+    // Fetch dynamic store list
+    chrome.runtime.sendMessage({ action: 'fetchAllStores' }, (response) => {
+        if (response && response.success && response.stores) {
+            const existingMap = new Map();
+            allAvailableStores.forEach(s => existingMap.set(s.domain, s));
+            response.stores.forEach(s => existingMap.set(s.domain, s));
+            allAvailableStores = Array.from(existingMap.values());
+            renderTrendingList(); // re-render after we have full paths
+        }
     });
 
     btnOptions.addEventListener('click', () => {
@@ -102,15 +139,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const trendingDeals = [
         { store: "amazon.in", text: "Sale on Electronics!" },
         { store: "ajio.com", text: "New Users 20% Off" },
-        { store: "flipkart.com", text: "BBD Pre-deals" }
+        { store: "flipkart.com", text: "BBD Pre-deals" },
+        { store: "myntra.com", text: "Flat 50-80% Off" },
+        { store: "nykaa.com", text: "Pink Friday Sale" },
+        { store: "makemytrip.com", text: "Up to ₹5000 Off Hotels" },
+        { store: "swiggy.com", text: "60% Off on First Order" }
     ];
 
-    trendingList.innerHTML = trendingDeals.map(d => `
-        <a href="https://${d.store}" target="_blank" style="display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 13px; cursor: pointer; transition: color 0.2s;">
-            <span><strong style="color: var(--text-main); font-weight: 600;">${d.store}</strong> • <span style="color: var(--text-muted);">${d.text}</span></span>
-            <span style="color: #FF416C; font-weight: 600;">&rarr;</span>
-        </a>
-    `).join('');
+    function renderTrendingList() {
+        trendingList.innerHTML = trendingDeals.map(d => {
+            const match = allAvailableStores.find(s => s.domain === d.store);
+            const link = match && match.affiliate_url ? match.affiliate_url : `https://${d.store}`;
+            return `
+            <a href="${link}" class="store-link" style="display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 13px; cursor: pointer; transition: color 0.2s;">
+                <span style="display: flex; align-items: center; gap: 8px;">
+                    <img src="https://www.google.com/s2/favicons?domain=${d.store}&sz=32" style="width: 16px; height: 16px; border-radius: 4px;" alt="logo">
+                    <span><strong style="color: var(--text-main); font-weight: 600;">${d.store}</strong> • <span style="color: var(--text-muted);">${d.text}</span></span>
+                </span>
+                <span style="color: #FF416C; font-weight: 600;">&rarr;</span>
+            </a>
+            `;
+        }).join('');
+    }
+    renderTrendingList();
 
     // Navigation Logic
     btnShowSubmit.addEventListener('click', () => {
@@ -164,11 +215,20 @@ document.addEventListener('DOMContentLoaded', () => {
         submitView.style.display = 'none';
         resultsDiv.style.display = 'block';
 
-        const matched = typeof SUPPORTED_STORES !== 'undefined' ? SUPPORTED_STORES.filter(store => store.includes(query)) : [];
+        const matched = allAvailableStores.filter(store => store.domain.includes(query));
         
         if (matched.length > 0) {
             resultsDiv.innerHTML = '<ul style="padding: 0; list-style: none; margin: 0;">' + 
-                matched.map(s => `<li><a href="https://${s}" target="_blank" style="display: flex; justify-content: space-between; padding: 12px 10px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: var(--text-main); font-weight: 500; background: var(--bg-secondary); transition: all 0.2s;">Open ${s} <span style="color: #FF416C;">&rarr;</span></a></li>`).join('') 
+                matched.map(s => {
+                    const link = s.affiliate_url || `https://${s.domain}`;
+                    return `<li><a href="${link}" class="store-link" style="display: flex; justify-content: space-between; padding: 12px 10px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 8px; text-decoration: none; color: var(--text-main); font-weight: 500; background: var(--bg-secondary); transition: all 0.2s; align-items: center;">
+                        <span style="display: flex; align-items: center; gap: 8px;">
+                            <img src="https://www.google.com/s2/favicons?domain=${s.domain}&sz=32" style="width: 18px; height: 18px; border-radius: 4px;" alt="logo">
+                            Open ${s.domain}
+                        </span>
+                        <span style="color: #FF416C;">&rarr;</span>
+                    </a></li>`;
+                }).join('') 
                 + '</ul>';
         } else {
             resultsDiv.innerHTML = '<div class="empty-state"><p>No stores found matching "'+query+'"</p><button id="suggest-btn" style="background:#FF416C; color:white; border:none;">Suggest this store?</button></div>';
