@@ -155,11 +155,14 @@ async function runPipeline() {
     
     const stores = await fetchStoreDomains();
     
-    // SAFETY LIMIT: Cap to 350 stores so it never runs more than ~45 mins, 
-    // keeping it strictly under Github's 2000 free monthly minutes.
-    const targetStores = stores.slice(0, 350);
+    // Shuffle all stores randomly so we process different websites every day
+    const shuffledStores = stores.sort(() => 0.5 - Math.random());
     
-    console.log(`Loaded ${stores.length} total stores. Analyzing ${targetStores.length} stores to respect free-tier time limits...`);
+    // SAFETY LIMIT: Cap to 350 random stores so it never runs more than ~45 mins, 
+    // keeping it strictly under Github's 2000 free monthly minutes.
+    const targetStores = shuffledStores.slice(0, 350);
+    
+    console.log(`Loaded ${stores.length} total stores. Randomly selected ${targetStores.length} stores to respect free-tier time limits...`);
     
     for (const store of targetStores) {
         if (!store.name) continue;
