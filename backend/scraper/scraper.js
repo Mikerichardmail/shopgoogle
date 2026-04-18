@@ -154,12 +154,9 @@ async function runPipeline() {
     console.log("🚀 Starting Daily Coupon Scraping Pipeline...");
     
     const stores = await fetchStoreDomains();
-    console.log(`Loaded ${stores.length} stores. Analyzing top 10 for demo run... (Remove slice in production)`);
+    console.log(`Loaded ${stores.length} stores. Analyzing all stores for full production run...`);
     
-    // For demo/safety so it doesn't run hundreds of requests immediately:
-    const targetStores = stores.slice(0, 10); 
-    
-    for (const store of targetStores) {
+    for (const store of stores) {
         if (!store.name) continue;
         
         const rawHtmlText = await scrapeCouponPage(store);
