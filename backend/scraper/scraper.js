@@ -68,7 +68,7 @@ async function scrapeCouponPage(storeConfig) {
     }
 }
 
-async function extractCouponsWithAI(rawText, domain) {
+async function extractCouponsWithAI(rawText, domain, retries = 3) {
     console.log(`[${domain}] Passing raw text to Gemini AI for extraction...`);
     
     const prompt = `
@@ -84,22 +84,32 @@ async function extractCouponsWithAI(rawText, domain) {
         ${rawText}
     `;
 
-    try {
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-        const result = await model.generateContent(prompt);
-        let textResult = result.response.text().trim();
-        
-        // Clean up markdown in case it included ```json ... ```
-        if (textResult.startsWith('```json')) textResult = textResult.replace('```json', '');
-        if (textResult.startsWith('```')) textResult = textResult.replace('```', '');
-        if (textResult.endsWith('```')) textResult = textResult.replace(/```$/, '');
+    for (let attempt = 1; attempt <= retries; attempt++) {
+        try {
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+            const result = await model.generateContent(prompt);
+            let textResult = result.response.text().trim();
+            
+            // Clean up markdown in case it included ```json ... ```
+            if (textResult.startsWith('```json')) textResult = textResult.replace('```json', '');
+            if (textResult.startsWith('```')) textResult = textResult.replace('```', '');
+            if (textResult.endsWith('```')) textResult = textResult.replace(/```$/, '');
 
-        const parsed = JSON.parse(textResult.trim());
-        return Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
-        console.error(`[${domain}] AI Extraction failed:`, e.message);
-        return [];
+            const parsed = JSON.parse(textResult.trim());
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+            if (e.status === 429 || e.message.includes('429') || e.message.includes('Quota')) {
+                console.warn(`[${domain}] Rate limit hit (429). Attempt ${attempt} of ${retries}. Waiting 10 seconds before retry...`);
+                await sleep(10000); // 10s cooldown
+            } else {
+                console.error(`[${domain}] AI Extraction failed:`, e.message);
+                return [];
+            }
+        }
     }
+    
+    console.error(`[${domain}] Failed up to ${retries} times due to Rate Limits.`);
+    return [];
 }
 
 async function getExistingCodes(storeId) {
@@ -158,11 +168,11 @@ async function runPipeline() {
     // Shuffle all stores randomly so we process different websites every day
     const shuffledStores = stores.sort(() => 0.5 - Math.random());
     
-    // SAFETY LIMIT: Cap to 350 random stores so it never runs more than ~45 mins, 
-    // keeping it strictly under Github's 2000 free monthly minutes.
-    const targetStores = shuffledStores.slice(0, 350);
+    // SAFETY LIMIT: Cap to 150 random stores to keep it under ~40 mins, 
+    // ensuring we don't trip Github Action limits or public IP blocks.
+    const targetStores = shuffledStores.slice(0, 150);
     
-    console.log(`Loaded ${stores.length} total stores. Randomly selected ${targetStores.length} stores to respect free-tier time limits...`);
+    console.log(`Loaded ${stores.length} total stores. Randomly selected ${targetStores.length} stores to run slowly today...`);
     
     for (const store of targetStores) {
         if (!store.name) continue;
@@ -180,8 +190,8 @@ async function runPipeline() {
             }
         }
         
-        // Wait 3 seconds to avoid aggressively pinging servers
-        await sleep(3000);
+        // Wait 12 seconds to drastically slow down and avoid IP bans/rate limits since Github runners use public IPs
+        await sleep(12000);
     }
     
     console.log("🏁 Pipeline Finished!");
