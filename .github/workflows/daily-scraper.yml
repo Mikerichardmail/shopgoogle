@@ -10,6 +10,8 @@ jobs:
   scrape-and-update:
     runs-on: ubuntu-latest
     timeout-minutes: 50
+    permissions:
+      contents: write
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
@@ -26,13 +28,7 @@ jobs:
         working-directory: ./backend/scraper
         run: npm install
         
-      - name: Auto-Discover New Websites
-        working-directory: ./backend/scraper
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node discover_stores.js
+
         
       - name: Run Scraper AI Script
         working-directory: ./backend/scraper
@@ -41,3 +37,11 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scraper.js
+
+      - name: Commit Scraper State
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add backend/scraper/scraper_state.json || true
+          git commit -m "chore: update scraper state [skip ci]" || echo "No changes to commit"
+          git push

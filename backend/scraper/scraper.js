@@ -2,6 +2,8 @@ require('dotenv').config();
 const axios = require('axios');
 const cheerio = require('cheerio');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const fs = require('fs');
+const path = require('path');
 
 // --- Configuration ---
 const SUPABASE_URL = process.env.SUPABASE_URL || "https://fwhzasbjexillgfrvksx.supabase.co"; 
@@ -14,6 +16,8 @@ if (GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") {
 }
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+
+const STATE_FILE = path.join(__dirname, 'scraper_state.json');
 
 // User-Agent to avoid basic blocks
 const headers = {
@@ -99,8 +103,8 @@ async function extractCouponsWithAI(rawText, domain, retries = 3) {
             return Array.isArray(parsed) ? parsed : [];
         } catch (e) {
             if (e.status === 429 || e.message.includes('429') || e.message.includes('Quota')) {
-                console.warn(`[${domain}] Rate limit hit (429). Attempt ${attempt} of ${retries}. Waiting 10 seconds before retry...`);
-                await sleep(10000); // 10s cooldown
+                console.warn(`[${domain}] Rate limit hit (429). Exiting today's run to respect API quota limits.`);
+                throw new Error("RATE_LIMIT");
             } else {
                 console.error(`[${domain}] AI Extraction failed:`, e.message);
                 return [];
@@ -163,38 +167,80 @@ async function insertNewCoupons(storeId, domain, newCoupons) {
 async function runPipeline() {
     console.log("🚀 Starting Daily Coupon Scraping Pipeline...");
     
+    // 1. Get State
+    let state = { lastProcessedIndex: 0 };
+    if (fs.existsSync(STATE_FILE)) {
+        try {
+            state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+        } catch (e) { 
+            console.error("Could not parse state file, starting from 0"); 
+        }
+    }
+    
     const stores = await fetchStoreDomains();
+    if (stores.length === 0) {
+        console.log("No stores found in database.");
+        return;
+    }
     
-    // Shuffle all stores randomly so we process different websites every day
-    const shuffledStores = stores.sort(() => 0.5 - Math.random());
+    // Sort all stores consistently so we can paginate through them day by day
+    stores.sort((a, b) => a.id - b.id);
     
-    // SAFETY LIMIT: Cap to 150 random stores to keep it under ~40 mins, 
-    // ensuring we don't trip Github Action limits or public IP blocks.
-    const targetStores = shuffledStores.slice(0, 150);
+    let startIndex = state.lastProcessedIndex;
+    if (startIndex >= stores.length) {
+        startIndex = 0; // Reset to beginning if we've scanned all domains
+    }
     
-    console.log(`Loaded ${stores.length} total stores. Randomly selected ${targetStores.length} stores to run slowly today...`);
+    // SAFETY LIMIT: Scan 50 websites block per run
+    const BATCH_SIZE = 50;
+    const targetStores = stores.slice(startIndex, startIndex + BATCH_SIZE);
     
-    for (const store of targetStores) {
+    console.log(`Loaded ${stores.length} total stores. Resuming from index ${startIndex}.`);
+    console.log(`Targeting ${targetStores.length} stores for today's scan...`);
+    
+    let processedCount = 0;
+
+    for (let i = 0; i < targetStores.length; i++) {
+        const store = targetStores[i];
         if (!store.name) continue;
         
+        processedCount++;
         const rawHtmlText = await scrapeCouponPage(store);
         
         if (rawHtmlText && GEMINI_API_KEY !== "YOUR_GEMINI_API_KEY") {
-            const aiExtracted = await extractCouponsWithAI(rawHtmlText, store.domain);
-            
-            if (aiExtracted.length > 0) {
-                console.log(`[${store.domain}] AI found ${aiExtracted.length} valid codes.`);
-                await insertNewCoupons(store.id, store.domain, aiExtracted);
-            } else {
-                console.log(`[${store.domain}] AI did not find any valid string codes.`);
+            try {
+                const aiExtracted = await extractCouponsWithAI(rawHtmlText, store.domain);
+                
+                if (aiExtracted.length > 0) {
+                    console.log(`[${store.domain}] AI found ${aiExtracted.length} valid codes.`);
+                    await insertNewCoupons(store.id, store.domain, aiExtracted);
+                } else {
+                    console.log(`[${store.domain}] AI did not find any valid string codes.`);
+                }
+            } catch (err) {
+                if (err.message === "RATE_LIMIT") {
+                    console.log("🛑 Rate Limit encountered. Saving progress and pausing pipeline until the next run.");
+                    state.lastProcessedIndex = startIndex + i;
+                    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+                    console.log("Current state saved. Exiting gracefully.");
+                    process.exit(0);
+                }
+                console.error(`Error processing ${store.domain}:`, err.message);
             }
         }
         
-        // Wait 12 seconds to drastically slow down and avoid IP bans/rate limits since Github runners use public IPs
+        // Wait 12 seconds to drastically slow down and avoid IP bans/rate limits
         await sleep(12000);
     }
     
-    console.log("🏁 Pipeline Finished!");
+    // Update state to the next batch
+    state.lastProcessedIndex = startIndex + processedCount;
+    if (state.lastProcessedIndex >= stores.length) {
+        state.lastProcessedIndex = 0; // Cycle back to the start!
+    }
+    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    
+    console.log(`🏁 Pipeline Finished! Next run will start at website index ${state.lastProcessedIndex}.`);
 }
 
 runPipeline();
