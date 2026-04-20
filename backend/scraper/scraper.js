@@ -46,30 +46,44 @@ async function fetchStoreDomains() {
 }
 
 async function scrapeCouponPage(storeConfig) {
-    // Generate an aggregator URL based on the domain/name
-    // Example: GrabOn often uses "storename-coupons"
-    const storeSlug = storeConfig.name.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const url = `https://www.grabon.in/${storeSlug}-coupons/`;
+    // Generate potential slugs
+    const nameSlug = storeConfig.name ? storeConfig.name.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+    const domainSlug = storeConfig.domain ? storeConfig.domain.split('.')[0].toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+    
+    // Try multiple GrabOn URL formats sequentially
+    const urlsToTry = [
+        `https://www.grabon.in/${nameSlug}-coupons/`,
+        `https://www.grabon.in/${domainSlug}-coupons/`,
+        `https://www.grabon.in/${nameSlug}india-coupons/`,
+        `https://www.grabon.in/${domainSlug}india-coupons/`
+    ].filter(url => !url.includes('//-coupons')); // Remove empty slugs
 
-    console.log(`[${storeConfig.domain}] Scraping ${url}...`);
+    const uniqueUrls = [...new Set(urlsToTry)];
 
-    try {
-        const response = await axios.get(url, { headers, timeout: 10000 });
-        const $ = cheerio.load(response.data);
-        
-        // Remove scripts, styles, nav, footer to save token size
-        $('script, style, nav, footer, header').remove();
-        
-        // Grab remaining visible text
-        let rawText = $('body').text().replace(/\s+/g, ' ').trim();
-        
-        // Truncate to save tokens (e.g., first 10000 characters is usually enough)
-        rawText = rawText.substring(0, 10000);
-        return rawText;
-    } catch (e) {
-        console.log(`[${storeConfig.domain}] Scrape failed (might be 404 or blocked). Error: ${e.message}`);
-        return null;
+    for (const url of uniqueUrls) {
+        console.log(`[${storeConfig.domain}] Scraping ${url}...`);
+        try {
+            const response = await axios.get(url, { headers, timeout: 10000 });
+            const $ = cheerio.load(response.data);
+            
+            // Remove scripts, styles, nav, footer to save token size
+            $('script, style, nav, footer, header').remove();
+            let rawText = $('body').text().replace(/\s+/g, ' ').trim();
+            
+            // Truncate to save tokens (e.g., first 10000 characters is usually enough)
+            return rawText.substring(0, 10000);
+        } catch (e) {
+            // Silently try next URL if 404 not found
+            if (e.response && e.response.status === 404) {
+                 console.log(`[${storeConfig.domain}] 404 Not Found for ${url}, trying next (if any)...`);
+            } else {
+                 console.log(`[${storeConfig.domain}] Scrape failed for ${url}. Error: ${e.message}`);
+            }
+        }
     }
+    
+    console.log(`[${storeConfig.domain}] ❌ Could not find valid coupon page after trying multiple URLs. Skiping.`);
+    return null;
 }
 
 async function extractCouponsWithAI(rawText, domain, retries = 3) {
