@@ -13,6 +13,7 @@
 !/backend/scraper/scraper.js
 !/backend/scraper/package.json
 !/backend/scraper/package-lock.json
+!/backend/scraper/scraper_state.json
 
 # 3. CRITICAL: Never accidentally sync secret keys or large node modules!
 .env
