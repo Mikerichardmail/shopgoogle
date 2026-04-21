@@ -104,7 +104,7 @@ async function extractCouponsWithAI(rawText, domain, retries = 3) {
 
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
-            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
             const result = await model.generateContent(prompt);
             let textResult = result.response.text().trim();
             
