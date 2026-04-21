@@ -70,8 +70,8 @@ async function scrapeCouponPage(storeConfig) {
             $('script, style, nav, footer, header').remove();
             let rawText = $('body').text().replace(/\s+/g, ' ').trim();
             
-            // Truncate to save tokens (e.g., first 10000 characters is usually enough)
-            return rawText.substring(0, 10000);
+            // Truncate to 4000 chars — saves 60% Gemini quota, codes are always near the top
+            return rawText.substring(0, 4000);
         } catch (e) {
             // Silently try next URL if 404 not found
             if (e.response && e.response.status === 404) {
@@ -89,18 +89,15 @@ async function scrapeCouponPage(storeConfig) {
 async function extractCouponsWithAI(rawText, domain, retries = 3) {
     console.log(`[${domain}] Passing raw text to Gemini AI for extraction...`);
     
-    const prompt = `
-        You are a smart system that extracts shopping coupon codes. 
-        I have scraped the webpage for a store (${domain}).
-        Extract all the valid coupon/promo codes and their short titles/descriptions from the following text.
-        Return ONLY a JSON array with no markdown formatting.
-        Format: [{'code': 'STRING', 'title': 'STRING'}]
-        If no distinct codes are found, return [].
-        Do not include deals that don't have a specific alphanumeric code.
-        
-        TEXT:
-        ${rawText}
-    `;
+    const prompt = `Extract coupon/promo codes from this Indian e-commerce page for ${domain}.
+Rules:
+- Only include codes that are alphanumeric strings (e.g. SAVE10, FLAT200, FIRST50)
+- Skip "No Code Required", bank-offer-only deals, or automatic discounts
+- Return ONLY valid JSON array, no markdown, no explanation
+Format: [{"code":"CODE","title":"Short description"}]
+If none found: []
+
+TEXT: ${rawText}`;
 
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
@@ -116,17 +113,28 @@ async function extractCouponsWithAI(rawText, domain, retries = 3) {
             const parsed = JSON.parse(textResult.trim());
             return Array.isArray(parsed) ? parsed : [];
         } catch (e) {
-            if (e.status === 429 || e.message.includes('429') || e.message.includes('Quota')) {
-                console.warn(`[${domain}] Rate limit hit (429). Exiting today's run to respect API quota limits.`);
+            const errMsg = e.message || '';
+            const isRateLimit = e.status === 429 || errMsg.includes('429') || errMsg.includes('RATE_LIMIT_EXCEEDED');
+            const isQuotaExhausted = errMsg.includes('RESOURCE_EXHAUSTED') || errMsg.includes('quota') || errMsg.includes('Quota');
+
+            if (isQuotaExhausted && !isRateLimit) {
+                // Daily quota fully exhausted — hard exit and save state
+                console.warn(`[${domain}] ❌ Daily quota exhausted. Stopping pipeline to save state.`);
                 throw new Error("RATE_LIMIT");
+            } else if (isRateLimit) {
+                // Per-minute rate limit — wait and retry with backoff
+                const waitSecs = attempt * 60;
+                console.warn(`[${domain}] ⏳ Per-minute rate limit (429). Attempt ${attempt}/${retries}. Waiting ${waitSecs}s before retry...`);
+                await sleep(waitSecs * 1000);
             } else {
-                console.error(`[${domain}] AI Extraction failed:`, e.message);
+                console.error(`[${domain}] AI Extraction failed:`, errMsg);
                 return [];
             }
         }
     }
     
-    console.error(`[${domain}] Failed up to ${retries} times due to Rate Limits.`);
+    // After all retries exhausted on rate limits, skip this store (don't kill pipeline)
+    console.warn(`[${domain}] ⚠️ Skipping store after ${retries} rate-limit retries. Moving on.`);
     return [];
 }
 
@@ -205,8 +213,8 @@ async function runPipeline() {
         startIndex = 0; // Reset to beginning if we've scanned all domains
     }
     
-    // SAFETY LIMIT: Scan 50 websites block per run
-    const BATCH_SIZE = 50;
+    // SAFETY LIMIT: 25 stores per run (4 runs/day = 100 stores/day total)
+    const BATCH_SIZE = 25;
     const targetStores = stores.slice(startIndex, startIndex + BATCH_SIZE);
     
     console.log(`Loaded ${stores.length} total stores. Resuming from index ${startIndex}.`);
@@ -243,8 +251,8 @@ async function runPipeline() {
             }
         }
         
-        // Wait 12 seconds to drastically slow down and avoid IP bans/rate limits
-        await sleep(12000);
+        // Wait 5 seconds between stores — enough to avoid IP bans, saves ~6 min per run
+        await sleep(5000);
     }
     
     // Update state to the next batch
