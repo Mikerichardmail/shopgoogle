@@ -186,18 +186,49 @@ async function insertNewCoupons(storeId, domain, newCoupons) {
     }
 }
 
-async function runPipeline() {
-    console.log("🚀 Starting Daily Coupon Scraping Pipeline...");
-    
-    // 1. Get State
-    let state = { lastProcessedIndex: 0 };
-    if (fs.existsSync(STATE_FILE)) {
-        try {
-            state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
-        } catch (e) { 
-            console.error("Could not parse state file, starting from 0"); 
+async function getScraperState() {
+    console.log("Fetching scraper state from Supabase...");
+    let res = await fetch(`${SUPABASE_URL}/rest/v1/scraper_state?key=eq.last_processed_index&select=value`, {
+        headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
         }
+    });
+
+    if (!res.ok) {
+        console.error("Failed to fetch state, defaulting to 0", await res.text());
+        return { index: 0 };
     }
+
+    const data = await res.json();
+    return data.length > 0 ? data[0].value : { index: 0 };
+}
+
+async function updateScraperState(newIndex) {
+    console.log(`Updating scraper state to index ${newIndex}...`);
+    let res = await fetch(`${SUPABASE_URL}/rest/v1/scraper_state?key=eq.last_processed_index`, {
+        method: 'PATCH',
+        headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ value: { index: newIndex }, updated_at: new Date().toISOString() })
+    });
+
+    if (!res.ok) {
+        console.error("Failed to update state", await res.text());
+    } else {
+        console.log("State updated successfully in Supabase.");
+    }
+}
+
+async function runPipeline() {
+    console.log("🚀 Starting Coupon Scraping Pipeline...");
+    
+    // 1. Get State from Supabase
+    const state = await getScraperState();
+    let startIndex = state.index || 0;
     
     const stores = await fetchStoreDomains();
     if (stores.length === 0) {
@@ -205,12 +236,17 @@ async function runPipeline() {
         return;
     }
     
-    // Sort all stores consistently so we can paginate through them day by day
-    stores.sort((a, b) => a.id - b.id);
+    // Sort all stores consistently so we can paginate through them
+    stores.sort((a, b) => {
+        // Handle potential UUIDs or BIGINTs
+        if (a.id < b.id) return -1;
+        if (a.id > b.id) return 1;
+        return 0;
+    });
     
-    let startIndex = state.lastProcessedIndex;
     if (startIndex >= stores.length) {
-        startIndex = 0; // Reset to beginning if we've scanned all domains
+        console.log("Reached end of store list. Resetting to 0.");
+        startIndex = 0; 
     }
     
     // SAFETY LIMIT: 25 stores per run (4 runs/day = 100 stores/day total)
@@ -218,13 +254,13 @@ async function runPipeline() {
     const targetStores = stores.slice(startIndex, startIndex + BATCH_SIZE);
     
     console.log(`Loaded ${stores.length} total stores. Resuming from index ${startIndex}.`);
-    console.log(`Targeting ${targetStores.length} stores for today's scan...`);
+    console.log(`Targeting ${targetStores.length} stores for this run...`);
     
     let processedCount = 0;
 
     for (let i = 0; i < targetStores.length; i++) {
         const store = targetStores[i];
-        if (!store.name) continue;
+        if (!store.domain) continue;
         
         processedCount++;
         const rawHtmlText = await scrapeCouponPage(store);
@@ -233,36 +269,34 @@ async function runPipeline() {
             try {
                 const aiExtracted = await extractCouponsWithAI(rawHtmlText, store.domain);
                 
-                if (aiExtracted.length > 0) {
+                if (aiExtracted && aiExtracted.length > 0) {
                     console.log(`[${store.domain}] AI found ${aiExtracted.length} valid codes.`);
                     await insertNewCoupons(store.id, store.domain, aiExtracted);
                 } else {
-                    console.log(`[${store.domain}] AI did not find any valid string codes.`);
+                    console.log(`[${store.domain}] AI did not find any valid codes.`);
                 }
             } catch (err) {
                 if (err.message === "RATE_LIMIT") {
-                    console.log("🛑 Rate Limit encountered. Saving progress and pausing pipeline until the next run.");
-                    state.lastProcessedIndex = startIndex + i;
-                    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
-                    console.log("Current state saved. Exiting gracefully.");
+                    console.log("🛑 Global Rate Limit (Quota) encountered. Saving progress and stopping.");
+                    await updateScraperState(startIndex + i);
                     process.exit(0);
                 }
                 console.error(`Error processing ${store.domain}:`, err.message);
             }
         }
         
-        // Wait 5 seconds between stores — enough to avoid IP bans, saves ~6 min per run
+        // Wait 5 seconds between stores to avoid IP bans
         await sleep(5000);
     }
     
-    // Update state to the next batch
-    state.lastProcessedIndex = startIndex + processedCount;
-    if (state.lastProcessedIndex >= stores.length) {
-        state.lastProcessedIndex = 0; // Cycle back to the start!
+    // Update state for next batch
+    let nextIndex = startIndex + processedCount;
+    if (nextIndex >= stores.length) {
+        nextIndex = 0; // Cycle back!
     }
-    fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+    await updateScraperState(nextIndex);
     
-    console.log(`🏁 Pipeline Finished! Next run will start at website index ${state.lastProcessedIndex}.`);
+    console.log(`🏁 Pipeline Finished! Next run will start at website index ${nextIndex}.`);
 }
 
 runPipeline();
