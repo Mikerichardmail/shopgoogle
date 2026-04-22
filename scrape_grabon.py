@@ -6,6 +6,15 @@ import re
 import cloudscraper
 from bs4 import BeautifulSoup
 
+# Load local .env file manually so it works in your VS Code terminal
+env_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(env_path):
+    with open(env_path, 'r') as f:
+        for line in f:
+            if '=' in line and not line.strip().startswith('#'):
+                key, val = line.strip().split('=', 1)
+                os.environ.setdefault(key, val)
+
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY environment variable is missing")
