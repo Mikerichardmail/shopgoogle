@@ -100,6 +100,8 @@ BATCH_SIZE = 50
 
 # 1. Get State
 start_index = 0
+local_state_file = os.path.join(os.path.dirname(__file__), 'backend', 'scraper', 'scraper_state.json')
+
 req_state = urllib.request.Request(f"{SUPABASE_URL}/scraper_state?key=eq.last_processed_index&select=value")
 req_state.add_header("apikey", SUPABASE_KEY)
 req_state.add_header("Authorization", f"Bearer {SUPABASE_KEY}")
@@ -108,8 +110,18 @@ try:
     state_data = json.loads(state_resp)
     if isinstance(state_data, list) and len(state_data) > 0:
         start_index = state_data[0].get("value", {}).get("index", 0)
+    else:
+        if os.path.exists(local_state_file):
+            with open(local_state_file, 'r') as f:
+                start_index = json.load(f).get("lastProcessedIndex", 0)
 except Exception as e:
-    print("Failed to fetch state:", e)
+    print("Failed to fetch state from Supabase:", e)
+    if os.path.exists(local_state_file):
+        with open(local_state_file, 'r') as f:
+            try:
+                start_index = json.load(f).get("lastProcessedIndex", 0)
+            except:
+                pass
 
 if start_index >= len(stores):
     start_index = 0
@@ -192,14 +204,20 @@ next_index = start_index + processed_count
 if next_index >= len(stores):
     next_index = 0
 
-req_update = urllib.request.Request(f"{SUPABASE_URL}/scraper_state?key=eq.last_processed_index", data=json.dumps({"value": {"index": next_index}}).encode(), method="PATCH")
+req_update = urllib.request.Request(f"{SUPABASE_URL}/scraper_state", data=json.dumps({"key": "last_processed_index", "value": {"index": next_index}}).encode(), method="POST")
 req_update.add_header("apikey", SUPABASE_KEY)
 req_update.add_header("Authorization", f"Bearer {SUPABASE_KEY}")
 req_update.add_header("Content-Type", "application/json")
+req_update.add_header("Prefer", "resolution=merge-duplicates")
 try:
     urllib.request.urlopen(req_update)
-    print(f"State updated to index {next_index}.")
+    print(f"State updated to index {next_index} in Supabase.")
 except Exception as e:
-    print("Failed to update state:", e)
+    print("Failed to update state in Supabase:", e)
+    # Save locally
+    os.makedirs(os.path.dirname(local_state_file), exist_ok=True)
+    with open(local_state_file, 'w') as f:
+        json.dump({"lastProcessedIndex": next_index}, f)
+    print(f"State updated to index {next_index} locally.")
 
 print(f"--- RUN FINISHED! Successfully scraped and uploaded {total_added} REAL coupons. ---")
