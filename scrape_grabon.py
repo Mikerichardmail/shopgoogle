@@ -130,6 +130,23 @@ target_stores = stores[start_index:start_index + BATCH_SIZE]
 print(f"Loaded {len(stores)} total stores. Resuming from index {start_index}.")
 print(f"Targeting {len(target_stores)} stores for this run...")
 
+def update_state(idx):
+    req_update = urllib.request.Request(f"{SUPABASE_URL}/scraper_state", data=json.dumps({"key": "last_processed_index", "value": {"index": idx}}).encode(), method="POST")
+    req_update.add_header("apikey", SUPABASE_KEY)
+    req_update.add_header("Authorization", f"Bearer {SUPABASE_KEY}")
+    req_update.add_header("Content-Type", "application/json")
+    req_update.add_header("Prefer", "resolution=merge-duplicates")
+    try:
+        urllib.request.urlopen(req_update)
+        print(f"State updated to index {idx} in Supabase.")
+    except Exception as e:
+        print("Failed to update state in Supabase:", e)
+        # Save locally
+        os.makedirs(os.path.dirname(local_state_file), exist_ok=True)
+        with open(local_state_file, 'w') as f:
+            json.dump({"lastProcessedIndex": idx}, f)
+        print(f"State updated to index {idx} locally.")
+
 total_added = 0
 processed_count = 0
 
@@ -198,26 +215,19 @@ for store in target_stores:
         print(f"  Failed processing {store_name}: {e}")
         
     time.sleep(5) # Safe delay to stay within free Groq tier limits
+    
+    if processed_count % 10 == 0:
+        intermediate_index = start_index + processed_count
+        if intermediate_index >= len(stores):
+            intermediate_index = 0
+        print(f"  [Periodic Save] Saving state at index {intermediate_index} after {processed_count} stores...")
+        update_state(intermediate_index)
 
 # Update State
 next_index = start_index + processed_count
 if next_index >= len(stores):
     next_index = 0
 
-req_update = urllib.request.Request(f"{SUPABASE_URL}/scraper_state", data=json.dumps({"key": "last_processed_index", "value": {"index": next_index}}).encode(), method="POST")
-req_update.add_header("apikey", SUPABASE_KEY)
-req_update.add_header("Authorization", f"Bearer {SUPABASE_KEY}")
-req_update.add_header("Content-Type", "application/json")
-req_update.add_header("Prefer", "resolution=merge-duplicates")
-try:
-    urllib.request.urlopen(req_update)
-    print(f"State updated to index {next_index} in Supabase.")
-except Exception as e:
-    print("Failed to update state in Supabase:", e)
-    # Save locally
-    os.makedirs(os.path.dirname(local_state_file), exist_ok=True)
-    with open(local_state_file, 'w') as f:
-        json.dump({"lastProcessedIndex": next_index}, f)
-    print(f"State updated to index {next_index} locally.")
+update_state(next_index)
 
 print(f"--- RUN FINISHED! Successfully scraped and uploaded {total_added} REAL coupons. ---")
