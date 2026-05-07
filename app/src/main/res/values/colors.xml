@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Page background -->
+    <color name="bg_page">#FAFAFA</color>
+    <color name="bg_page_end">#F5F5F5</color>
+
+    <!-- Search bar -->
+    <color name="search_bg">#F3F4F6</color>
+    <color name="text_hint">#9CA3AF</color>
+
+    <!-- Modern Category Gradients -->
+    <color name="cat_fashion_start">#9D50BB</color>
+    <color name="cat_fashion_end">#6E48AA</color>
+    
+    <color name="cat_beauty_start">#FF5858</color>
+    <color name="cat_beauty_end">#F857A6</color>
+    
+    <color name="cat_electronics_start">#2193B0</color>
+    <color name="cat_electronics_end">#6DD5ED</color>
+    
+    <color name="cat_health_start">#11998E</color>
+    <color name="cat_health_end">#38EF7D</color>
+    
+    <color name="cat_home_start">#F7971E</color>
+    <color name="cat_home_end">#FFD200</color>
+    
+    <color name="cat_kids_start">#EE0979</color>
+    <color name="cat_kids_end">#FF6A00</color>
+    
+    <color name="cat_travel_start">#4CA1AF</color>
+    <color name="cat_travel_end">#2C3E50</color>
+    
+    <color name="cat_more_start">#8E9EAB</color>
+    <color name="cat_more_end">#EEF2F3</color>
+    
+    <color name="cat_food_start">#FF9966</color>
+    <color name="cat_food_end">#FF5E62</color>
+
+    <!-- Accent -->
+    <color name="accent_purple">#9D50BB</color>
+    <color name="accent_purple_light">#E0C8FF</color>
+    <color name="accent_purple_dark">#6E48AA</color>
+    <color name="accent_pink">#F857A6</color>
+
+    <!-- Text -->
+    <color name="text_primary">#1F2937</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_white">#FFFFFF</color>
+
+    <!-- Card -->
+    <color name="card_bg">#FFFFFF</color>
+    <color name="card_border">#F3F4F6</color>
+    <color name="cashback_text">#7C3AED</color>
+
+    <!-- Navigation -->
+    <color name="nav_active">#9D50BB</color>
+    <color name="nav_inactive">#9CA3AF</color>
+    <color name="nav_bg">#FFFFFF</color>
+
+    <!-- Buttons & Tabs -->
+    <color name="btn_start">#9D50BB</color>
+    <color name="btn_end">#6E48AA</color>
+</resources>

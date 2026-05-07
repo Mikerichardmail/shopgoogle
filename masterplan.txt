@@ -1,0 +1,195 @@
+You are building a COMPLETE ANDROID APP from scratch.
+
+Goal:
+Generate a fully working Android Studio project and produce a DEBUG APK.
+
+This app is a SIMPLE SHOPPING AFFILIATE APP.
+
+------------------------------------------------
+APP IDENTITY
+
+Package Name:
+com.onlineshoppingapps
+
+App Type:
+Affiliate Shopping App
+
+Architecture:
+- Single Activity
+- Single Screen (Home)
+- No complex navigation
+
+------------------------------------------------
+CORE PRINCIPLE
+
+KEEP THE APP:
+- SIMPLE
+- FAST
+- STABLE
+- NO OVER-ENGINEERING
+
+------------------------------------------------
+DO NOT USE
+
+- Firebase
+- Backend server
+- Login system
+- MVVM complexity
+- Dependency injection
+- WebView for checkout
+- Ads (for now)
+
+------------------------------------------------
+APP STRUCTURE
+
+MainActivity
+  → HomeFragment
+
+------------------------------------------------
+HOME SCREEN UI (VERY IMPORTANT)
+
+Build a vertical scroll layout with:
+
+1. TOP SEARCH BAR
+- Rounded search field
+- Placeholder: "Search products, stores..."
+
+2. CATEGORY CHIPS (HORIZONTAL)
+- Electronics
+- Beauty
+- Fashion
+- Health
+- Home
+
+(Click filters content locally)
+
+3. BANNER SECTION (TOP SLIDER)
+- Use 1–2 images from remote URL (GitHub)
+- Use ViewPager2
+
+4. QUICK SECTIONS (HORIZONTAL LISTS)
+- Skincare Essentials
+- Protein Deals
+- Mobile Deals
+- Fashion Deals
+
+Each section:
+- Horizontal RecyclerView
+- Card layout
+
+5. TOP STORES ROW
+Show max 5 stores:
+
+- Amazon
+- Flipkart
+- Myntra
+- Mamaearth
+- HealthKart
+
+Each store:
+- Icon from drawable
+- Name
+- Click opens link
+
+6. DEAL LIST (VERTICAL)
+- Simple card list
+- Image + title + button
+
+------------------------------------------------
+STORE SYSTEM (STATIC DATA)
+
+Create data class:
+
+Store(
+ id: String,
+ name: String,
+ link: String,
+ iconRes: Int
+)
+
+Hardcode list:
+
+amazon → https://ekaro.in/xxx
+flipkart → https://ekaro.in/xxx
+myntra → https://ekaro.in/xxx
+mamaearth → https://ekaro.in/xxx
+healthkart → https://ekaro.in/xxx
+
+Icons must be from drawable.
+
+------------------------------------------------
+CLICK BEHAVIOR
+
+On click:
+
+Open link using Intent.ACTION_VIEW
+
+DO NOT use WebView
+
+------------------------------------------------
+BANNER SYSTEM
+
+Load banner images from remote GitHub URLs.
+
+Use Glide for loading.
+
+Example:
+https://raw.githubusercontent.com/yourrepo/banner1.jpg
+
+------------------------------------------------
+SEARCH (SIMPLE)
+
+- Basic search field
+- Filter local list (no backend)
+- No complex logic
+
+------------------------------------------------
+UI DESIGN
+
+- Clean modern UI
+- Material Design
+- Rounded corners
+- Proper spacing
+- Light theme
+
+------------------------------------------------
+PERFORMANCE
+
+- No heavy libraries
+- Smooth scrolling
+- Fast launch
+
+------------------------------------------------
+OUTPUT REQUIRED
+
+Generate:
+
+1. Full Android Studio project
+2. All Java/Kotlin files
+3. XML layouts
+4. Drawable placeholders
+5. Gradle files
+6. Working Home screen
+7. Working click actions
+8. Glide integration
+9. RecyclerView adapters
+
+------------------------------------------------
+FINAL STEP
+
+Build and output:
+
+DEBUG APK
+
+Ensure:
+- App installs
+- App opens
+- No crash
+- Links open correctly
+
+------------------------------------------------
+IMPORTANT
+
+Do NOT leave placeholders incomplete.
+Do NOT skip any files.
+App must run immediately after install.

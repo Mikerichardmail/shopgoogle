@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graphify — Beautiful Data Visualization</title>
+  <meta name="description" content="Graphify lets you create stunning, interactive charts and graphs instantly. Bar, Line, Pie, Radar & more — free, no login required." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── BACKGROUND ORBS ── -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="18" width="6" height="12" rx="2" fill="url(#g1)"/>
+            <rect x="11" y="10" width="6" height="20" rx="2" fill="url(#g2)"/>
+            <rect x="20" y="4" width="6" height="26" rx="2" fill="url(#g3)"/>
+            <defs>
+              <linearGradient id="g1" x1="5" y1="18" x2="5" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#a78bfa"/><stop offset="1" stop-color="#7c3aed"/></linearGradient>
+              <linearGradient id="g2" x1="14" y1="10" x2="14" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#2563eb"/></linearGradient>
+              <linearGradient id="g3" x1="23" y1="4" x2="23" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#34d399"/><stop offset="1" stop-color="#059669"/></linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="brand-name">Graphify</span>
+        <span class="brand-badge">BETA</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-ghost" id="btn-theme" aria-label="Toggle theme" title="Toggle theme">
+          <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <button class="btn-primary" id="btn-export">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <div class="hero-pill">✨ No signup required · 100% Free</div>
+    <h1 class="hero-title">Turn Data into <span class="gradient-text">Stunning</span> Visuals</h1>
+    <p class="hero-sub">Paste your data, pick a chart type, and watch it come alive — gorgeous, interactive graphs in seconds.</p>
+    <div class="hero-cta">
+      <button class="btn-primary btn-lg" id="hero-start-btn">
+        Start Graphing
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+      </button>
+      <button class="btn-ghost btn-lg" id="hero-demo-btn">Load Demo Data</button>
+    </div>
+
+    <!-- STAT COUNTERS -->
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num" data-target="6">0</span><span class="stat-label">Chart Types</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-num" data-target="100">0</span><span class="stat-label">% Free</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-num" data-target="0">∞</span><span class="stat-label">Datasets</span></div>
+    </div>
+  </header>
+
+  <!-- ── MAIN BUILDER ── -->
+  <main class="builder" id="builder">
+
+    <!-- LEFT: Controls -->
+    <aside class="controls-panel" id="controls-panel">
+
+      <!-- Chart Type Selector -->
+      <section class="panel-section">
+        <h2 class="section-title">
+          <span class="section-icon">📊</span> Chart Type
+        </h2>
+        <div class="chart-type-grid" id="chart-type-grid">
+          <button class="chart-type-btn active" data-type="bar" title="Bar Chart">
+            <svg viewBox="0 0 32 32" fill="currentColor"><rect x="2" y="18" width="6" height="12" rx="1.5"/><rect x="11" y="10" width="6" height="20" rx="1.5"/><rect x="20" y="4" width="6" height="26" rx="1.5"/></svg>
+            <span>Bar</span>
+          </button>
+          <button class="chart-type-btn" data-type="line" title="Line Chart">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,26 9,14 16,18 23,8 30,4"/></svg>
+            <span>Line</span>
+          </button>
+          <button class="chart-type-btn" data-type="pie" title="Pie Chart">
+            <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2 A14 14 0 0 1 28.12 23 Z" opacity="0.9"/><path d="M28.12 23 A14 14 0 0 1 3.88 23 Z" opacity="0.7"/><path d="M3.88 23 A14 14 0 0 1 16 2 Z" opacity="0.5"/></svg>
+            <span>Pie</span>
+          </button>
+          <button class="chart-type-btn" data-type="doughnut" title="Doughnut Chart">
+            <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="6" stroke-dasharray="30 15 20 10" stroke-dashoffset="0"/></svg>
+            <span>Donut</span>
+          </button>
+          <button class="chart-type-btn" data-type="radar" title="Radar Chart">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><polygon points="16,2 30,12 25,28 7,28 2,12" fill="currentColor" opacity="0.2"/><polygon points="16,7 25,14 21,24 11,24 7,14"/></svg>
+            <span>Radar</span>
+          </button>
+          <button class="chart-type-btn" data-type="polarArea" title="Polar Area">
+            <svg viewBox="0 0 32 32"><path d="M16 16 L16 4 A12 12 0 0 1 27.4 23 Z" fill="currentColor" opacity="0.8"/><path d="M16 16 L27.4 23 A12 12 0 0 1 4.6 23 Z" fill="currentColor" opacity="0.6"/><path d="M16 16 L4.6 23 A12 12 0 0 1 16 4 Z" fill="currentColor" opacity="0.4"/></svg>
+            <span>Polar</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- DATA INPUT -->
+      <section class="panel-section">
+        <h2 class="section-title">
+          <span class="section-icon">📋</span> Data Input
+        </h2>
+        <div class="input-field-group">
+          <label class="field-label">Chart Title</label>
+          <input type="text" id="chart-title" class="gfy-input" placeholder="My Awesome Chart" value="Sales Report 2025" />
+        </div>
+        <div class="input-field-group">
+          <label class="field-label">Labels <span class="field-hint">(comma separated)</span></label>
+          <input type="text" id="data-labels" class="gfy-input" placeholder="Jan, Feb, Mar..." value="Jan, Feb, Mar, Apr, May, Jun" />
+        </div>
+
+        <!-- Dataset rows -->
+        <div class="datasets-wrapper" id="datasets-wrapper">
+          <!-- Injected by JS -->
+        </div>
+        <button class="btn-add-dataset" id="btn-add-dataset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Add Dataset
+        </button>
+      </section>
+
+      <!-- CHART OPTIONS -->
+      <section class="panel-section">
+        <h2 class="section-title">
+          <span class="section-icon">⚙️</span> Options
+        </h2>
+        <div class="option-row">
+          <label class="option-label" for="opt-legend">Show Legend</label>
+          <label class="toggle" for="opt-legend">
+            <input type="checkbox" id="opt-legend" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="option-row">
+          <label class="option-label" for="opt-grid">Show Grid</label>
+          <label class="toggle" for="opt-grid">
+            <input type="checkbox" id="opt-grid" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="option-row">
+          <label class="option-label" for="opt-animate">Animate</label>
+          <label class="toggle" for="opt-animate">
+            <input type="checkbox" id="opt-animate" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="option-row">
+          <label class="option-label" for="opt-fill">Fill Area</label>
+          <label class="toggle" for="opt-fill">
+            <input type="checkbox" id="opt-fill" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="input-field-group" style="margin-top:1rem">
+          <label class="field-label">Color Palette</label>
+          <div class="palette-grid" id="palette-grid">
+            <button class="palette-btn active" data-palette="cosmic" title="Cosmic">
+              <span style="background:#7c3aed"></span><span style="background:#2563eb"></span><span style="background:#059669"></span>
+            </button>
+            <button class="palette-btn" data-palette="sunrise" title="Sunrise">
+              <span style="background:#f97316"></span><span style="background:#ef4444"></span><span style="background:#f59e0b"></span>
+            </button>
+            <button class="palette-btn" data-palette="ocean" title="Ocean">
+              <span style="background:#0ea5e9"></span><span style="background:#06b6d4"></span><span style="background:#3b82f6"></span>
+            </button>
+            <button class="palette-btn" data-palette="forest" title="Forest">
+              <span style="background:#16a34a"></span><span style="background:#65a30d"></span><span style="background:#0d9488"></span>
+            </button>
+            <button class="palette-btn" data-palette="candy" title="Candy">
+              <span style="background:#ec4899"></span><span style="background:#a855f7"></span><span style="background:#f43f5e"></span>
+            </button>
+            <button class="palette-btn" data-palette="mono" title="Mono">
+              <span style="background:#e2e8f0"></span><span style="background:#94a3b8"></span><span style="background:#475569"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <button class="btn-render" id="btn-render">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Render Chart
+      </button>
+    </aside>
+
+    <!-- RIGHT: Chart Canvas -->
+    <div class="chart-panel" id="chart-panel">
+      <div class="chart-topbar">
+        <span class="chart-title-display" id="chart-title-display">Sales Report 2025</span>
+        <div class="chart-actions">
+          <button class="icon-btn" id="btn-fullscreen" title="Fullscreen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          </button>
+          <button class="icon-btn" id="btn-copy" title="Copy Chart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="canvas-wrapper" id="canvas-wrapper">
+        <canvas id="main-chart"></canvas>
+        <div class="chart-watermark">Graphify</div>
+      </div>
+
+      <!-- STATS BAR -->
+      <div class="stats-bar" id="stats-bar">
+        <!-- injected by JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ── EXPORT MODAL ── -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="export-modal" role="dialog" aria-modal="true" aria-label="Export Chart">
+      <div class="modal-header">
+        <h3>Export Chart</h3>
+        <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Choose your export format:</p>
+        <div class="export-options">
+          <button class="export-btn" id="exp-png">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>PNG Image</span>
+            <small>High quality raster</small>
+          </button>
+          <button class="export-btn" id="exp-jpg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>JPG Image</span>
+            <small>Compressed raster</small>
+          </button>
+          <button class="export-btn" id="exp-json">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span>JSON Data</span>
+            <small>Raw dataset export</small>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST ── -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ── FULLSCREEN OVERLAY ── -->
+  <div class="fs-overlay" id="fs-overlay">
+    <button class="fs-close" id="fs-close">×</button>
+    <canvas id="fs-chart"></canvas>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

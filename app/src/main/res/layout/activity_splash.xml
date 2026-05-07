@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <!-- App Icon -->
+    <ImageView
+        android:id="@+id/ivSplashIcon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/app_icon"
+        android:scaleType="fitCenter"
+        android:alpha="0" />
+
+    <!-- App Name -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:alpha="0"
+        android:id="@+id/llSplashTitle">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Online"
+            android:textColor="#2D2D44"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shopping"
+            android:textColor="#E91E63"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Tagline -->
+    <TextView
+        android:id="@+id/tvSplashTagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Best coupons &amp; offers. All stores."
+        android:textColor="#8888AA"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:alpha="0" />
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressSplash"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="160dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="48dp"
+        android:progressTint="@color/accent_purple"
+        android:progressBackgroundTint="#F3E8FF"
+        android:indeterminate="true"
+        android:alpha="0" />
+
+    <TextView
+        android:id="@+id/tvLoadingStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading stores..."
+        android:textColor="#AAAACC"
+        android:textSize="12sp"
+        android:layout_marginTop="12dp"
+        android:alpha="0" />
+
+</LinearLayout>

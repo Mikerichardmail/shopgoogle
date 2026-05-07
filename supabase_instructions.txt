@@ -1,0 +1,133 @@
+# Supabase Database Integration Instructions
+
+This document provides all the necessary information to connect to and use the central Supabase database for the "Best Coupons India" ecosystem. You can share this document with developers or use it as a reference when building new apps (web, mobile, or backend) that need access to the central database.
+
+## 1. Database Credentials
+
+To connect to the database, you will need the following environment variables. Add these securely to your new project (e.g., in a `.env` file).
+
+```env
+SUPABASE_URL=https://fwhzasbjexillgfrvksx.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3aHphc2JqZXhpbGxnZnJ2a3N4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0Mzk5NzksImV4cCI6MjA5MjAxNTk3OX0.MfZPPcx4d7OkAo56emiRjF9FabceUweCVJqv48tXAv4
+```
+
+> **Note:** The `ANON_KEY` is completely safe to be exposed in frontend clients (like Chrome extensions, React apps, or mobile apps) provided that Row Level Security (RLS) is appropriately configured on the Supabase dashboard.
+
+---
+
+## 2. Table Schemas
+
+Our database relies on three core tables. Ensure your new applications understand these structures:
+
+### `stores` Table
+Stores all tracking and domain details for target e-commerce brands.
+* `id` *(Primary Key)*
+* `name` *(String, e.g., "Amazon India")*
+* `domain` *(String, e.g., "amazon.in")*
+
+### `coupons` Table
+Stores all the AI-scraped promo codes.
+* `id` *(Primary Key)*
+* `store_id` *(Foreign Key to `stores.id`)*
+* `code` *(String, the promo code itself, e.g., "SAVE500")*
+* `title` *(String, short description of the coupon)*
+* `success_score` *(Integer, default: 50. Used to track if users found the coupon helpful)*
+* `status` *(String, typically "active" or "expired")*
+* `source` *(String, designates where the code came from, e.g., "ai_bot")*
+
+### `scraper_state` Table
+Internal table tracking the background job status. New applications generally don't need to read or mutate this.
+* `key` *(String, Primary)*
+* `value` *(JSON)*
+* `updated_at` *(Timestamp)*
+
+---
+
+## 3. Implementation Examples
+
+Depending on the tech stack of your new application, choose one of the following methods to query the database.
+
+### Method A: No Dependencies (Vanilla JS / Native Fetch)
+Best for Chrome Extensions, small scripts, or environments without Node package managers.
+
+```javascript
+const SUPABASE_URL = "https://fwhzasbjexillgfrvksx.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_ANON_KEY_HERE"; // Replace with key from above
+
+// Example: Fetch all active coupons for a specific store ID
+async function fetchCouponsForStore(storeId) {
+    const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/coupons?store_id=eq.${storeId}&status=eq.active`, 
+        {
+            method: 'GET',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json'
+            }
+        }
+    );
+    
+    if (!response.ok) {
+        console.error("Failed to fetch data", await response.text());
+        return [];
+    }
+    
+    const coupons = await response.json();
+    return coupons;
+}
+```
+
+### Method B: Supabase JavaScript SDK
+Best for React, Next.js, React Native, or Vue apps.
+
+**1. Install the Package:**
+```bash
+npm install @supabase/supabase-js
+```
+
+**2. Initialize the Client:**
+```javascript
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_ANON_KEY
+
+// Create a single supabase client for interacting with your database
+export const supabase = createClient(supabaseUrl, supabaseKey)
+```
+
+**3. Run a Query:**
+```javascript
+// Example: Get all stores and their respective coupons
+async function getAllData() {
+  const { data: stores, error: storeError } = await supabase
+    .from('stores')
+    .select(`
+      id, 
+      name, 
+      domain,
+      coupons (
+        id,
+        code,
+        title,
+        success_score
+      )
+    `)
+    .eq('coupons.status', 'active'); // Only fetch active coupons
+    
+  if (storeError) {
+    console.error('Error fetching data:', storeError);
+    return;
+  }
+  
+  console.log(stores);
+}
+```
+
+---
+
+## 4. Best Practices
+1. **Always Filter by Status:** When querying the `coupons` table in consumer-facing apps, always apply the `status=eq.active` filter so users don't see expired codes.
+2. **Handle Errors Gracefully:** Network requests can fail. Always wrap your fetches in `try/catch` and provide fallback UI to the user if the database is unresponsive.
+3. **Do not abuse writes:** If using the Native Fetch method, ensure you are using `GET` requests for reading data and `POST` for writing. Be mindful of hitting the backend with excessive writes from client applications.

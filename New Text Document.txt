@@ -1,0 +1,314 @@
+You are building a modern Android shopping affiliate app.
+
+---
+
+APP IDENTITY
+
+Package Name:
+com.onlineshoppingapps
+
+App Type:
+Affiliate Shopping App
+
+Goal:
+Create a clean, fast, high-conversion shopping app that shows stores and redirects users via affiliate links.
+
+---
+
+CORE PRINCIPLE
+
+- Simple UI
+- Fast loading
+- No login
+- No backend required
+- All stores always visible
+- Smart sorting based on user context
+
+---
+
+MAIN UI STRUCTURE
+
+Single screen app with:
+
+1. Top Search Bar
+2. Gender Tabs (Women, Men, Kids)
+3. Category Grid
+4. Dynamic Top Stores Section
+5. Full Store List
+
+---
+
+TOP SEARCH BAR
+
+- Rounded search input
+- Placeholder: "Search stores or products..."
+- Filters store list locally
+
+---
+
+GENDER TABS
+
+Tabs:
+
+- Women (default)
+- Men
+- Kids
+
+Tabs DO NOT filter stores.
+Tabs ONLY change priority (sorting).
+
+---
+
+CATEGORY GRID
+
+Show 6 categories:
+
+- Electronics
+- Beauty
+- Fashion
+- Health
+- Home
+- Deals
+
+Category DOES NOT remove stores.
+Category ONLY boosts relevant stores to top.
+
+---
+
+MASTER STORE LIST
+
+Use this exact list everywhere:
+
+Amazon
+Flipkart
+Myntra
+Nykaa
+AJIO
+Mamaearth
+OnePlus
+Realme
+Oppo
+Croma
+Reliance Digital
+Boat
+Fire-Boltt
+Noise
+HealthKart
+MuscleBlaze
+Nutrabay
+HK Vitals
+GNC
+TrueBasics
+True Elements
+Netmeds
+Truemeds
+PharmEasy
+Kapiva
+Puma
+Adidas
+Levi's
+Uniqlo
+Libas
+Clovia
+Blackberrys
+Neemans
+Rigo
+XYXX
+Bewakoof
+Shopsy
+Tata CLiQ
+Pepperfry
+Godrej Interio
+Havells
+Nippon Paint
+FirstCry
+IGP
+SUGAR
+WOW
+The Derma Co
+Plum
+Dot & Key
+Aqualogica
+Foxtale
+mCaffeine
+Lotus Botanicals
+Forest Essentials
+Kama Ayurveda
+Swiss Beauty
+Ustraa
+Sephora
+Biba
+Lenskart
+Meesho
+
+---
+
+TAB PRIORITY SYSTEM
+
+Women priority:
+Nykaa
+Myntra
+AJIO
+Mamaearth
+Sephora
+Biba
+Plum
+The Derma Co
+SUGAR
+WOW
+Clovia
+
+Men priority:
+Amazon
+Flipkart
+Puma
+Adidas
+Levi's
+Boat
+OnePlus
+Realme
+Ustraa
+Myntra
+AJIO
+
+Kids priority:
+FirstCry
+Amazon
+Flipkart
+Meesho
+
+---
+
+CATEGORY BOOST SYSTEM
+
+Electronics:
+Amazon
+Flipkart
+OnePlus
+Realme
+Oppo
+Croma
+Boat
+
+Beauty:
+Nykaa
+Mamaearth
+Plum
+The Derma Co
+SUGAR
+WOW
+mCaffeine
+
+Fashion:
+Myntra
+AJIO
+Puma
+Adidas
+Levi's
+Zara
+
+Health:
+HealthKart
+MuscleBlaze
+Nutrabay
+Netmeds
+PharmEasy
+
+Home:
+Pepperfry
+Godrej Interio
+Havells
+
+Deals:
+Amazon
+Flipkart
+Myntra
+Nykaa
+Boat
+
+---
+
+SORTING LOGIC
+
+1. Start with full master store list
+2. Move tab priority stores to top
+3. If category selected:
+   Move category boost stores below tab priority
+4. Keep remaining stores in original order
+5. No store should be removed
+
+---
+
+DYNAMIC TOP STORES SECTION
+
+Top stores section should always show:
+
+- First 6–8 stores from sorted list
+- Automatically updates when tab or category changes
+
+---
+
+FULL STORE LIST
+
+- Shows complete sorted list
+- Scrollable
+- Click opens affiliate link using external browser
+
+---
+
+CLICK BEHAVIOR
+
+On store click:
+
+- Open affiliate link using Intent.ACTION_VIEW
+- Do not use WebView
+
+---
+
+UI DESIGN
+
+- Clean modern UI
+- Rounded cards
+- Soft shadows
+- Consistent spacing
+- Minimal colors
+
+---
+
+PERFORMANCE
+
+- No heavy libraries
+- Smooth scrolling
+- Fast startup
+
+---
+
+IMPORTANT RULES
+
+- Do NOT remove stores based on tab or category
+- Do NOT create multiple screens
+- Do NOT overcomplicate logic
+- Keep everything in one screen
+
+---
+
+EXPECTED RESULT
+
+- Smart store ordering
+- High discoverability
+- High click-through rate
+- Clean professional UI
+
+---
+
+FINAL OUTPUT
+
+Generate:
+
+- Complete Android project
+- UI layout
+- Store data handling
+- Sorting logic implementation
+- Working debug APK
+
+The app must run without errors and be ready to install.
