@@ -823,16 +823,73 @@
         "priority": 999
     },
     {
-        "id": "b4107c8b-35b4-47d8-93f6-d990ea5896ab",
+        "id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3",
         "name": "Dell India",
-        "domain": "dell.com",
+        "domain": "dell.com/en-in",
         "category": "Electronics",
-        "logo_url": "https://logo.clearbit.com/dell.com",
+        "logo_url": "https://logo.clearbit.com/dell.com/en-in",
         "affiliate_link": null,
         "affiliate_url": null,
         "slug": "dell_india",
-        "coupons": [],
-        "final_link": "https://dell.com",
+        "coupons": [
+            {
+                "code": "GRAB5%",
+                "title": "Up To 40% OFF + Extra 5% OFF",
+                "description": "Get up to 40% OFF on laptops and an extra 5% OFF with code GRAB5%",
+                "success_score": 95,
+                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
+            },
+            {
+                "code": "GRAB5%",
+                "title": "Up To 45% OFF Back To School Sale",
+                "description": "Get up to 40% OFF on laptops during Back to School Sale and an extra 5% OFF with code GRAB5%",
+                "success_score": 95,
+                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
+            },
+            {
+                "code": "GRAB5%",
+                "title": "Desktop Special Up To 40% OFF + Extra 5% OFF",
+                "description": "Get up to 40% OFF on Desktop purchases and an extra 5% OFF with code GRAB5%",
+                "success_score": 95,
+                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
+            },
+            {
+                "code": "GRAB5%",
+                "title": "Students Special Student Laptops Special - Up To 18% OFF + Up To 10% Cashback",
+                "description": "Get up to 18% OFF on Student laptops and up to 10% cashback, plus an extra 5% OFF with code GRAB5%",
+                "success_score": 95,
+                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
+            },
+            {
+                "code": "GRAB5%",
+                "title": "Dell Discount Coupons & Offers Extra Cashback Up to Rs 2500",
+                "description": "Get up to Rs 2500 cashback on Select Credit Card EMI transactions, plus an extra 5% OFF with code GRAB5%",
+                "success_score": 95,
+                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
+            },
+            {
+                "code": "GRAB5%",
+                "title": "No Cost EMI Offer 5% OFF + No Cost EMI up to 12 months",
+                "description": "Get 5% extra discount and No Cost EMI up to 12 months on Laptop Purchases with code GRAB5%",
+                "success_score": 95,
+                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
+            },
+            {
+                "code": "ACTIVATEOFFER",
+                "title": "Rs.10000 OFF Learn From Home Offer",
+                "description": "Get up to Rs 10,000 off on student laptops with this Learn From Home Offer",
+                "success_score": 80,
+                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
+            },
+            {
+                "code": "GRAB5%",
+                "title": "Gaming Laptop Deal Extra 5% OFF + up to Rs 10,000 Cashback",
+                "description": "Get extra 5% OFF and up to 10,000 Cashback on Alienware 16 Aurora with code GRAB5%",
+                "success_score": 95,
+                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
+            }
+        ],
+        "final_link": "https://dell.com/en-in",
         "category_list": [
             "Electronics"
         ],
@@ -6010,49 +6067,61 @@
         "priority": 999
     },
     {
-        "id": "2c83a94e-5d97-4ddb-8824-63769f579d85",
+        "id": "73f0a2d5-92a2-4d48-870e-035a88dbe429",
         "name": "Avast",
-        "domain": "linkredirect.in",
-        "category": null,
-        "logo_url": null,
-        "affiliate_link": "https://bitli.in/Vn5og5H",
-        "affiliate_url": "https://bitli.in/rmyKZJ2",
-        "slug": "avast",
-        "coupons": [],
-        "final_link": "https://bitli.in/Vn5og5H",
-        "category_list": [
-            "Shopping"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "0cf4791b-c55b-4a34-a089-0b8fb35bf697",
-        "name": "Libas",
-        "domain": "libas.in",
-        "category": "Fashion",
-        "logo_url": "https://logo.clearbit.com/libas.in",
+        "domain": "avast.com",
+        "category": "SaaS",
+        "logo_url": "https://logo.clearbit.com/avast.com",
         "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "libas",
+        "affiliate_url": "https://bitli.in/a87JnYy",
+        "slug": "avast",
         "coupons": [
             {
-                "code": "SALE100",
-                "title": "Up To 70% OFF + Extra Rs 100 OFF",
-                "description": "Get up to 70% OFF on all sitewide fashion products. Also, get an extra Rs 100 OFF using a code.",
+                "code": "FLAT60",
+                "title": "FLAT 60% OFF Ultimate Security Plan",
+                "description": "Flat 60% OFF On Your Subscription",
                 "success_score": 92,
-                "store_id": "0cf4791b-c55b-4a34-a089-0b8fb35bf697"
+                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
             },
             {
-                "code": "SALE200",
-                "title": "Flat Rs 200 OFF",
-                "description": "Avail Rs 200 OFF on your products Minimum order value should be Rs 2899",
+                "code": "FLAT50",
+                "title": "FLAT 50% OFF Get Flat 50% OFF On Premium Security For 1 Windows PC",
+                "description": "Avail 50% OFF on your plan purchase",
                 "success_score": 95,
-                "store_id": "0cf4791b-c55b-4a34-a089-0b8fb35bf697"
+                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
+            },
+            {
+                "code": "FLAT49",
+                "title": "FLAT 49% OFF Get Flat 49% OFF On SecureLine VPN For 3 years",
+                "description": "Save 49% OFF on your plan purchase",
+                "success_score": 98,
+                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
+            },
+            {
+                "code": "FLAT48",
+                "title": "FLAT 48% OFF Flat 48% OFF On Avast Premium Security",
+                "description": "Get 48% OFF on premium security plan",
+                "success_score": 99,
+                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
+            },
+            {
+                "code": "FLAT48",
+                "title": "FLAT 48% OFF Download Avast Cleanup Premium & Get 48% OFF On Plans",
+                "description": "Get Cleanup premium plan - save 48% OFF",
+                "success_score": 99,
+                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
+            },
+            {
+                "code": "FLAT20",
+                "title": "FLAT 20% OFF Flat 20% OFF On Avast Business | All Users",
+                "description": "Get flat 20% OFF on the business range of software by Avast",
+                "success_score": 88,
+                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
             }
         ],
-        "final_link": "https://libas.in",
+        "final_link": "https://bitli.in/a87JnYy",
         "category_list": [
-            "Fashion"
+            "SaaS"
         ],
         "priority": 999
     },
@@ -6125,22 +6194,6 @@
         "final_link": "https://vanheusenindia.com",
         "category_list": [
             "Fashion"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "3caa2e2d-2b4e-4ed1-afed-b4811b704192",
-        "name": "WOW Skin Science",
-        "domain": "wowskinscience.com",
-        "category": "Beauty",
-        "logo_url": "https://logo.clearbit.com/wowskinscience.com",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "wow_skin_science",
-        "coupons": [],
-        "final_link": "https://wowskinscience.com",
-        "category_list": [
-            "Beauty"
         ],
         "priority": 999
     },
@@ -6248,107 +6301,6 @@
             "Electronics"
         ],
         "priority": 999
-    },
-    {
-        "id": "0847df88-0736-4c59-9afc-dff3ec2bd910",
-        "name": "Apple India",
-        "domain": "apple.com/in",
-        "category": "Electronics",
-        "logo_url": "https://logo.clearbit.com/apple.com/in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "apple_india",
-        "coupons": [
-            {
-                "code": "ACTIVATE",
-                "title": "Get iPhone 17 Pro Staring @ Best Price",
-                "description": "Get iPhone 17 Pro starting at Rs 134900 with EMI Rs 10,878 /month",
-                "success_score": 92,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Students Special Student Laptops Special - Up To 18% OFF + Up To 10% Cashback",
-                "description": "Get up to 18% off and 10% cashback on student laptops",
-                "success_score": 88,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Mega Offer: Up to 50% OFF + Extra Rs 1500 OFF On Tablets",
-                "description": "Get up to 50% off and extra Rs 1500 off on tablets",
-                "success_score": 90,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Buy Mac Mini Starting At Rs 59,900",
-                "description": "Buy Mac mini starting at Rs 10,454 per month or Rs 59,900 before trade-in",
-                "success_score": 95,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Grab Up To Rs 10000 Instant Cashback + No Cost EMI On Your Orders",
-                "description": "Get up to Rs 10,000 instant cashback and no cost EMI on orders",
-                "success_score": 98,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Apple MacBook Air - Starting At Rs 99900 Onwards",
-                "description": "Shop now for the Apple MacBook Air at the best price",
-                "success_score": 94,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "New Launches Of Iphone 15Pro & 15 Pro Max",
-                "description": "Shop for new launches of iphone 15 & 15 pro",
-                "success_score": 91,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Up To Rs.1500 OFF Get Up To Rs 1500 Instant Savings On HomePod With HDFC Bank Cards",
-                "description": "Get up to Rs 1500 off on HomePod with HDFC bank cards",
-                "success_score": 96,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Up To Rs.10000 CASHBACK Bank Offer : Get Up To Rs 10,000 Instant Cashback On Selected Products",
-                "description": "Get up to Rs 10,000 instant cashback on selected products",
-                "success_score": 99,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Exchange Offer On Your Products",
-                "description": "Grab this offer by exchanging your phones in this website",
-                "success_score": 89,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Buy iPhone 14 Starts At Rs 79,900",
-                "description": "Buy iPhone 14 starts at Rs 7 9,900 with superfast 5G",
-                "success_score": 93,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Buy iPad Air Starting At Rs 59,900",
-                "description": "Now purchase the iPad Air starting at just Rs 59,900",
-                "success_score": 97,
-                "store_id": "0847df88-0736-4c59-9afc-dff3ec2bd910"
-            }
-        ],
-        "final_link": "https://apple.com/in",
-        "category_list": [
-            "Electronics"
-        ],
-        "priority": 17
     },
     {
         "id": "0a74e76a-6a60-4da2-b038-3ee40799a5fd",
@@ -6460,37 +6412,6 @@
             }
         ],
         "final_link": "https://homecentre.in",
-        "category_list": [
-            "Home"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "137c05b8-a96b-4828-af32-438f40169ff4",
-        "name": "IKEA India",
-        "domain": "ikea.com/in",
-        "category": "Home",
-        "logo_url": "https://logo.clearbit.com/ikea.com/in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "ikea_india",
-        "coupons": [
-            {
-                "code": "FLAT20",
-                "title": "IKEA Family Members Offer: Flat 20% OFF On 600+ Products",
-                "description": "Flat 20% OFF on 600+ products Shop by collections: cushion covers, bedsheets, rugs, curtains, etc Offer is applicable for IKEA membership users only",
-                "success_score": 92,
-                "store_id": "137c05b8-a96b-4828-af32-438f40169ff4"
-            },
-            {
-                "code": "FLAT20",
-                "title": "Flat 20% OFF On Purchase Of Cushions & Cushion Covers",
-                "description": "Flat 20% OFF on purchase of cushions & cushion covers Price starts from Rs 159 Offer is accessible to all users",
-                "success_score": 95,
-                "store_id": "137c05b8-a96b-4828-af32-438f40169ff4"
-            }
-        ],
-        "final_link": "https://ikea.com/in",
         "category_list": [
             "Home"
         ],
@@ -6871,22 +6792,6 @@
         "priority": 999
     },
     {
-        "id": "659dc117-98fe-4c70-9280-7967a12b8025",
-        "name": "BookMyShow",
-        "domain": "bookmyshow.com",
-        "category": "Entertainment",
-        "logo_url": "https://logo.clearbit.com/bookmyshow.com",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "bookmyshow",
-        "coupons": [],
-        "final_link": "https://bookmyshow.com",
-        "category_list": [
-            "Entertainment"
-        ],
-        "priority": 999
-    },
-    {
         "id": "95b78687-99c1-45bd-b387-6a574b2be97b",
         "name": "PVR Cinemas",
         "domain": "pvrcinemas.com",
@@ -7180,22 +7085,6 @@
         "final_link": "https://adobe.com",
         "category_list": [
             "SaaS"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "67453ed4-7e9b-43ec-9760-4fe8015f195e",
-        "name": "Shopsy",
-        "domain": "shopsy.in",
-        "category": "Marketplace",
-        "logo_url": "https://logo.clearbit.com/shopsy.in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "shopsy",
-        "coupons": [],
-        "final_link": "https://shopsy.in",
-        "category_list": [
-            "Marketplace"
         ],
         "priority": 999
     },
@@ -8056,22 +7945,6 @@
         "priority": 999
     },
     {
-        "id": "6d7cc28f-d700-4707-8304-7583aa3ef036",
-        "name": "SUGAR Cosmetics",
-        "domain": "in.sugarcosmetics.com",
-        "category": "Beauty",
-        "logo_url": "https://logo.clearbit.com/in.sugarcosmetics.com",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "sugar_cosmetics",
-        "coupons": [],
-        "final_link": "https://in.sugarcosmetics.com",
-        "category_list": [
-            "Beauty"
-        ],
-        "priority": 999
-    },
-    {
         "id": "db83e3bd-a44e-45ef-997e-34389d12c3b3",
         "name": "Biotique",
         "domain": "biotique.com",
@@ -8131,22 +8004,6 @@
         "priority": 999
     },
     {
-        "id": "b20b2f18-f060-4aa7-8601-7f8c4ad36607",
-        "name": "Forest Essentials",
-        "domain": "forestessentialsindia.com",
-        "category": "Beauty",
-        "logo_url": "https://logo.clearbit.com/forestessentialsindia.com",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "forest_essentials",
-        "coupons": [],
-        "final_link": "https://forestessentialsindia.com",
-        "category_list": [
-            "Beauty"
-        ],
-        "priority": 999
-    },
-    {
         "id": "bd824ecf-b917-45ac-8880-5d4df7389097",
         "name": "The Body Shop India",
         "domain": "thebodyshop.in",
@@ -8173,93 +8030,6 @@
         "slug": "dot_and_key",
         "coupons": [],
         "final_link": "https://dotandkey.com",
-        "category_list": [
-            "Beauty"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "a54e0823-79dd-4ba6-962c-c00326a5bd22",
-        "name": "Aqualogica",
-        "domain": "aqualogica.in",
-        "category": "Beauty",
-        "logo_url": "https://logo.clearbit.com/aqualogica.in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "aqualogica",
-        "coupons": [
-            {
-                "code": "MEGADEAL",
-                "title": "Combo Deal Best Sellers Collections - Buy 4 Items At Just Rs 1299!",
-                "description": "Buy 4 items at just Rs 1299 only Use the coupon code to grab the deal Limited period offer!",
-                "success_score": 98,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            },
-            {
-                "code": "ACTIVATEOFFER",
-                "title": "Up To 25% OFF Amazon Get Up To 25% OFF On All Aqualogica Products",
-                "description": "Shop now & save up to 25% OFF on your purchases Categories: sunscreen, body mist, face wash & more The prices start from Rs 95 & above",
-                "success_score": 98,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            },
-            {
-                "code": "ACTIVATEOFFER",
-                "title": "SITEWIDE OFF Sitewide Offer: Get Up To 40% OFF On Your Orders",
-                "description": "Avail up to 40% OFF on your orders Price starts from Rs 249 It includes: serum, moisturizer, lip care, eye care and more This is valid for all users",
-                "success_score": 98,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            },
-            {
-                "code": "DOUBLEFUN",
-                "title": "BUY 2 GET 2 FREE Best Sellers Collections - Buy 2 & Get 2 Free & Extra 5% OFF",
-                "description": "Shop now & pick any 2 products to the cart Get 2 free on best sellers collections Avail an extra 5% OFF on prepaid orders Valid for all users",
-                "success_score": 97,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            },
-            {
-                "code": "FRESH",
-                "title": "Any 2 @ Rs 699 Pick Any 2 Products At Just Rs 699",
-                "description": "Enjoy a special combo deal Pick any 2 products at just Rs 699 Offer is accessible to all users",
-                "success_score": 97,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            },
-            {
-                "code": "ACTIVATEOFFER",
-                "title": "Aqualogica Sale Discount Codes & Promo Code BEST PRICE Get Cleansers Products Starts At Rs 249 Onwards",
-                "description": "Get cleanser products at the best price The price starts at Rs 249 onwards Valid for all users",
-                "success_score": 98,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            },
-            {
-                "code": "ACTIVATEOFFER",
-                "title": "Up To 40% OFF Moisturizers: Get Up To 40% OFF On Your Orders",
-                "description": "Grab up to 40% OFF on your moisturizers Price starts from Rs 299 Accessible for all users",
-                "success_score": 98,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            },
-            {
-                "code": "CODEACTIVATED",
-                "title": "Up To 25% OFF Dew Drops Beauty Collection - Up To 25% OFF On Your Purchases",
-                "description": "Grab up to 25% OFF on purchases of dew drops beauty collections Shop for pure and natural glow drops to grab this offer Prices start at Rs 699",
-                "success_score": 98,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            },
-            {
-                "code": "ACTIVATEOFFER",
-                "title": "Bundle Offer Bundle Products - Bundle Up & Save Up To 25% OFF",
-                "description": "Save up to 25% OFF on bundled products And also an extra 5% OFF on prepaid orders. The price range starts at Rs 598 Avail free shipping Applicable all users",
-                "success_score": 98,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            },
-            {
-                "code": "ACTIVATEOFFER",
-                "title": "BEST BUYS Glow Pop Products @ Starting Price At Rs 699",
-                "description": "At the best price of Rs 699 grab glow pop products Available products are glow+ juicy dew drops and radiance+ juicy dew products It is like lightw",
-                "success_score": 98,
-                "store_id": "a54e0823-79dd-4ba6-962c-c00326a5bd22"
-            }
-        ],
-        "final_link": "https://aqualogica.in",
         "category_list": [
             "Beauty"
         ],
@@ -8350,95 +8120,6 @@
             }
         ],
         "final_link": "https://philips.co.in",
-        "category_list": [
-            "Electronics"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3",
-        "name": "Dell India",
-        "domain": "dell.com/en-in",
-        "category": "Electronics",
-        "logo_url": "https://logo.clearbit.com/dell.com/en-in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "dell_india",
-        "coupons": [
-            {
-                "code": "GRAB5%",
-                "title": "Up To 40% OFF + Extra 5% OFF",
-                "description": "Get up to 40% OFF on laptops and an extra 5% OFF with code GRAB5%",
-                "success_score": 95,
-                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
-            },
-            {
-                "code": "GRAB5%",
-                "title": "Up To 45% OFF Back To School Sale",
-                "description": "Get up to 40% OFF on laptops during Back to School Sale and an extra 5% OFF with code GRAB5%",
-                "success_score": 95,
-                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
-            },
-            {
-                "code": "GRAB5%",
-                "title": "Desktop Special Up To 40% OFF + Extra 5% OFF",
-                "description": "Get up to 40% OFF on Desktop purchases and an extra 5% OFF with code GRAB5%",
-                "success_score": 95,
-                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
-            },
-            {
-                "code": "GRAB5%",
-                "title": "Students Special Student Laptops Special - Up To 18% OFF + Up To 10% Cashback",
-                "description": "Get up to 18% OFF on Student laptops and up to 10% cashback, plus an extra 5% OFF with code GRAB5%",
-                "success_score": 95,
-                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
-            },
-            {
-                "code": "GRAB5%",
-                "title": "Dell Discount Coupons & Offers Extra Cashback Up to Rs 2500",
-                "description": "Get up to Rs 2500 cashback on Select Credit Card EMI transactions, plus an extra 5% OFF with code GRAB5%",
-                "success_score": 95,
-                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
-            },
-            {
-                "code": "GRAB5%",
-                "title": "No Cost EMI Offer 5% OFF + No Cost EMI up to 12 months",
-                "description": "Get 5% extra discount and No Cost EMI up to 12 months on Laptop Purchases with code GRAB5%",
-                "success_score": 95,
-                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
-            },
-            {
-                "code": "ACTIVATEOFFER",
-                "title": "Rs.10000 OFF Learn From Home Offer",
-                "description": "Get up to Rs 10,000 off on student laptops with this Learn From Home Offer",
-                "success_score": 80,
-                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
-            },
-            {
-                "code": "GRAB5%",
-                "title": "Gaming Laptop Deal Extra 5% OFF + up to Rs 10,000 Cashback",
-                "description": "Get extra 5% OFF and up to 10,000 Cashback on Alienware 16 Aurora with code GRAB5%",
-                "success_score": 95,
-                "store_id": "cfca8b94-9e34-49ea-925b-d8e08f7363c3"
-            }
-        ],
-        "final_link": "https://dell.com/en-in",
-        "category_list": [
-            "Electronics"
-        ],
-        "priority": 18
-    },
-    {
-        "id": "21c7f311-061f-4399-9f70-279b5522c294",
-        "name": "HP India",
-        "domain": "hp.com/in-en",
-        "category": "Electronics",
-        "logo_url": "https://logo.clearbit.com/hp.com/in-en",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "hp_india",
-        "coupons": [],
-        "final_link": "https://hp.com/in-en",
         "category_list": [
             "Electronics"
         ],
@@ -8626,54 +8307,6 @@
             }
         ],
         "final_link": "https://mi.com/in",
-        "category_list": [
-            "Electronics"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "b719dc5b-6d6c-4885-8c5e-85e5388d0ec8",
-        "name": "realme India",
-        "domain": "realme.com/in",
-        "category": "Electronics",
-        "logo_url": "https://logo.clearbit.com/realme.com/in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "realme_india",
-        "coupons": [],
-        "final_link": "https://realme.com/in",
-        "category_list": [
-            "Electronics"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "d1990f4f-f203-4808-8f6a-69069ca25532",
-        "name": "Vivo India",
-        "domain": "vivo.com/in",
-        "category": "Electronics",
-        "logo_url": "https://logo.clearbit.com/vivo.com/in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "vivo_india",
-        "coupons": [],
-        "final_link": "https://vivo.com/in",
-        "category_list": [
-            "Electronics"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "aee70811-2dce-4d87-823c-3711392ee0b9",
-        "name": "OPPO India",
-        "domain": "oppo.com/in",
-        "category": "Electronics",
-        "logo_url": "https://logo.clearbit.com/oppo.com/in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "oppo_india",
-        "coupons": [],
-        "final_link": "https://oppo.com/in",
         "category_list": [
             "Electronics"
         ],
@@ -9002,22 +8635,6 @@
         "final_link": "https://milkbasket.com",
         "category_list": [
             "Grocery"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "59578d53-bdb9-4b28-8b67-7e71001fd7db",
-        "name": "Test Store",
-        "domain": "Test Store",
-        "category": null,
-        "logo_url": null,
-        "affiliate_link": null,
-        "affiliate_url": "https://amazon.in",
-        "slug": "test_store",
-        "coupons": [],
-        "final_link": "https://amazon.in",
-        "category_list": [
-            "Shopping"
         ],
         "priority": 999
     },
@@ -9518,107 +9135,6 @@
         "slug": "air_india",
         "coupons": [],
         "final_link": "https://airindia.com",
-        "category_list": [
-            "Travel"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "e49716a1-e8ce-4267-9bd0-dfab35648f25",
-        "name": "IndiGo",
-        "domain": "goindigo.in",
-        "category": "Travel",
-        "logo_url": "https://logo.clearbit.com/goindigo.in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "indigo",
-        "coupons": [
-            {
-                "code": "FLYMORE",
-                "title": "Up To 10% OFF Destination Of The Week - Up To 10% OFF On International Flights",
-                "description": "Avail UP TO 10% OFF on flights TO select international destinations as part of IndiGo\u2019s \u2018Destination of the Week\u2019 campaign",
-                "success_score": 92,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Up To 50% OFF Flights Exclusive Deal : Grab Up To 50% OFF On Domestic Flight Bookings",
-                "description": "Get up to 50% OFF on Domestic flight bookings",
-                "success_score": 95,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "FLYMORE",
-                "title": "Up To 10% OFF Destination Of The Week - Up To 10% OFF On International Flights",
-                "description": "Avail UP TO 10% OFF on flights TO select international destinations as part of IndiGo\u2019s \u2018Destination of the Week\u2019 campaign",
-                "success_score": 92,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Up To 10% OFF Destination Of The Week - Up To 10% OFF On International Flights",
-                "description": "Avail UP TO 10% OFF on flights TO select international destinations as part of IndiGo\u2019s \u2018Destination of the Week\u2019 campaign",
-                "success_score": 92,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "INDULGE",
-                "title": "Up To Rs.5000 OFF Book Hotels & Get Up To Rs 5000 OFF + Blu Chips",
-                "description": "Grab Up To Rs 5000 OFF on your hotel bookings Earn up to 8 IndiGo Bluchips for every Rs 100 spent",
-                "success_score": 90,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "INDULGE",
-                "title": "Up To Rs.5000 OFF Book Hotels & Get Up To Rs 5000 OFF + Blu Chips",
-                "description": "Grab Up To Rs 5000 OFF on your hotel bookings Earn up to 8 IndiGo Bluchips for every Rs 100 spent",
-                "success_score": 90,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "UKSTAY",
-                "title": "Up To Rs.5000 OFF Don\u2019t Miss Out \u2013 Up to Rs 5000 OFF on UK Hotel Stays",
-                "description": "Plan your perfect trip for UK with IndiGo at best prices Avail Up To Rs 5000 OFF on your stays",
-                "success_score": 88,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Up To Rs.4500 OFF AU Bank Offer - Up To Rs 4500 OFF On Flight Bookings",
-                "description": "Save Up To Rs 4500 OFF on your flight bookings Offer valid on AU bank cards only Applicable on every Wednesday",
-                "success_score": 94,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "GOSTAY",
-                "title": "IndiGo Coupon Codes Today Up To 25% OFF Exclusive Offer: Up to 25% OFF on Hotel Reservations",
-                "description": "Book your stay with IndiGo Hotels and enjoy up to 25% OFF instantly !",
-                "success_score": 89,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "INDULGE",
-                "title": "Up To Rs.5000 OFF Book Hotels & Get Up To Rs 5000 OFF + Blu Chips",
-                "description": "Grab Up To Rs 5000 OFF on your hotel bookings Earn up to 8 IndiGo Bluchips for every Rs 100 spent",
-                "success_score": 90,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "Up To Rs.5000 OFF Book Hotels & Get Up To Rs 5000 OFF + Blu Chips",
-                "description": "Grab Up To Rs 5000 OFF on your hotel bookings Earn up to 8 IndiGo Bluchips for every Rs 100 spent",
-                "success_score": 90,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            },
-            {
-                "code": "ACTIVATE",
-                "title": "At Rs 1515 Save More with Prepaid Excess Baggage from Rs 1515 Onwards",
-                "description": "Book Pre-paid Excess or Additional pieces of Baggage Save Up To 20% OFF when you pre-book excess or additional baggage",
-                "success_score": 91,
-                "store_id": "e49716a1-e8ce-4267-9bd0-dfab35648f25"
-            }
-        ],
-        "final_link": "https://goindigo.in",
         "category_list": [
             "Travel"
         ],
@@ -10545,22 +10061,6 @@
             }
         ],
         "final_link": "https://durian.in",
-        "category_list": [
-            "Home"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "29bfc579-a5d8-4997-8af2-59fca7defa31",
-        "name": "Godrej Interio",
-        "domain": "interio.in",
-        "category": "Home",
-        "logo_url": "https://logo.clearbit.com/interio.in",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "godrej_interio",
-        "coupons": [],
-        "final_link": "https://interio.in",
         "category_list": [
             "Home"
         ],
@@ -12397,22 +11897,6 @@
         "priority": 999
     },
     {
-        "id": "df61802a-43f5-4c9d-b5e6-eee7d9ed9115",
-        "name": "Ola",
-        "domain": "olacabs.com",
-        "category": "Travel",
-        "logo_url": "https://logo.clearbit.com/olacabs.com",
-        "affiliate_link": null,
-        "affiliate_url": null,
-        "slug": "ola",
-        "coupons": [],
-        "final_link": "https://olacabs.com",
-        "category_list": [
-            "Travel"
-        ],
-        "priority": 999
-    },
-    {
         "id": "6c0ed42a-8049-4f3f-9d10-cd5aa7ad06be",
         "name": "Bluehost",
         "domain": "bluehost.com",
@@ -13164,65 +12648,6 @@
         "final_link": "https://extp.in/lv5mh3",
         "category_list": [
             "Electronics"
-        ],
-        "priority": 999
-    },
-    {
-        "id": "73f0a2d5-92a2-4d48-870e-035a88dbe429",
-        "name": "Avast",
-        "domain": "avast.com",
-        "category": "SaaS",
-        "logo_url": "https://logo.clearbit.com/avast.com",
-        "affiliate_link": null,
-        "affiliate_url": "https://bitli.in/a87JnYy",
-        "slug": "avast",
-        "coupons": [
-            {
-                "code": "FLAT60",
-                "title": "FLAT 60% OFF Ultimate Security Plan",
-                "description": "Flat 60% OFF On Your Subscription",
-                "success_score": 92,
-                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
-            },
-            {
-                "code": "FLAT50",
-                "title": "FLAT 50% OFF Get Flat 50% OFF On Premium Security For 1 Windows PC",
-                "description": "Avail 50% OFF on your plan purchase",
-                "success_score": 95,
-                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
-            },
-            {
-                "code": "FLAT49",
-                "title": "FLAT 49% OFF Get Flat 49% OFF On SecureLine VPN For 3 years",
-                "description": "Save 49% OFF on your plan purchase",
-                "success_score": 98,
-                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
-            },
-            {
-                "code": "FLAT48",
-                "title": "FLAT 48% OFF Flat 48% OFF On Avast Premium Security",
-                "description": "Get 48% OFF on premium security plan",
-                "success_score": 99,
-                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
-            },
-            {
-                "code": "FLAT48",
-                "title": "FLAT 48% OFF Download Avast Cleanup Premium & Get 48% OFF On Plans",
-                "description": "Get Cleanup premium plan - save 48% OFF",
-                "success_score": 99,
-                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
-            },
-            {
-                "code": "FLAT20",
-                "title": "FLAT 20% OFF Flat 20% OFF On Avast Business | All Users",
-                "description": "Get flat 20% OFF on the business range of software by Avast",
-                "success_score": 88,
-                "store_id": "73f0a2d5-92a2-4d48-870e-035a88dbe429"
-            }
-        ],
-        "final_link": "https://bitli.in/a87JnYy",
-        "category_list": [
-            "SaaS"
         ],
         "priority": 999
     }

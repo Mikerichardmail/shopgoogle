@@ -2,10 +2,13 @@ import urllib.request
 import json
 import time
 import os
+from dotenv import load_dotenv
 
-GROQ_API_KEY = "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"
-SUPABASE_URL = "https://fwhzasbjexillgfrvksx.supabase.co/rest/v1"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3aHphc2JqZXhpbGxnZnJ2a3N4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0Mzk5NzksImV4cCI6MjA5MjAxNTk3OX0.MfZPPcx4d7OkAo56emiRjF9FabceUweCVJqv48tXAv4"
+load_dotenv()
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL") + "/rest/v1"
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 # 1. Fetch all stores from Supabase
 req_stores = urllib.request.Request(f"{SUPABASE_URL}/stores?select=id,name")
