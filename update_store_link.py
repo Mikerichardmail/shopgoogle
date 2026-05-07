@@ -39,46 +39,76 @@ def upload_to_supabase(json_path):
 
 def update_affiliate_link(json_path, target_domain, new_affiliate_url):
     """
-    Updates the affiliate URL for a specific store in the JSON database.
-    Used by the Telegram bot integration.
+    Updates the affiliate URL for a specific store in BOTH Supabase SQL and the JSON database.
+    Ensures that ONLY existing stores are updated.
     """
+    target_domain = target_domain.lower().replace("www.", "").strip()
+    
+    # 1. Update Supabase SQL Database first (Source of Truth)
+    try:
+        # We use PATCH to update existing record. 
+        # We filter by domain to ensure we only update the intended store.
+        db_url = f"{SUPABASE_URL}/rest/v1/stores?domain=eq.{target_domain}"
+        headers = {
+            "apikey": SUPABASE_KEY,
+            "Authorization": f"Bearer {SUPABASE_KEY}",
+            "Content-Type": "application/json",
+            "Prefer": "return=representation" # To check if any rows were affected
+        }
+        db_payload = {
+            "affiliate_url": new_affiliate_url
+        }
+        
+        db_res = requests.patch(db_url, headers=headers, json=db_payload)
+        
+        if db_res.status_code != 200:
+            return {"status": "error", "message": f"DB Update failed: {db_res.text}"}
+            
+        updated_rows = db_res.json()
+        if not updated_rows:
+            return {"status": "error", "message": f"Store with domain '{target_domain}' not found in Supabase Database. Cannot add new stores via bot."}
+            
+        print(f"SQL DB updated for {target_domain}")
+        
+    except Exception as e:
+        return {"status": "error", "message": f"Database connection error: {str(e)}"}
+
+    # 2. Update Local JSON (for eventual upload to Storage)
     if not os.path.exists(json_path):
-        return {"status": "error", "message": f"JSON file not found at {json_path}"}
+        return {"status": "warning", "message": f"DB updated, but local JSON not found at {json_path}. Run sync script to fix."}
 
     try:
         with open(json_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
-        found = False
-        target_domain = target_domain.lower().replace("www.", "").strip()
-        
+        found_in_json = False
         for store in data:
             store_domain = store.get("domain", "").lower().replace("www.", "").strip()
-            
             if store_domain == target_domain:
-                # Update both fields for safety
                 store["affiliate_url"] = new_affiliate_url
                 store["final_link"] = new_affiliate_url
-                found = True
+                found_in_json = True
                 break
         
-        if not found:
-            return {"status": "error", "message": f"Store with domain '{target_domain}' not found in database."}
+        if not found_in_json:
+            # If not in JSON but was in DB, we should probably add it to JSON, 
+            # but user said "do not let it add new store", so we'll just warn.
+            return {"status": "warning", "message": f"DB updated, but store not found in {json_path}. Please run full export script."}
 
         # Save back to JSON
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
         
-        # Automatically push to Supabase
+        # 3. Push updated JSON to Supabase Storage
         push_success, push_msg = upload_to_supabase(json_path)
         
         if push_success:
-            return {"status": "success", "message": f"Successfully updated {target_domain} and PUSHED to live server."}
+            return {"status": "success", "message": f"Successfully updated {target_domain} in DB and PUSHED JSON to live server."}
         else:
-            return {"status": "warning", "message": f"Updated locally, but PUSH FAILED: {push_msg}"}
+            return {"status": "warning", "message": f"DB and local JSON updated, but Storage PUSH FAILED: {push_msg}"}
 
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        return {"status": "error", "message": f"JSON update error: {str(e)}"}
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
